@@ -179,7 +179,7 @@ password handling and path sanitisation — everything that does not need a UI.
 
 ## License
 
-[MIT](LICENSE) © 2026 FipArc contributors
+[MIT](LICENSE) © 2026 43086FG
 
 Third-party components keep their own licenses:
 
