@@ -405,10 +405,8 @@ namespace FipArc
 
             if (Playable.IsMedia(p))
             {
-                MediaForm f = new MediaForm();
-                f.Show();
-                f.LoadFile(target);
-                Application.Run();
+                // 本软件不再内置音视频播放，交给系统默认播放器
+                try { Process.Start(new ProcessStartInfo(p) { UseShellExecute = true }); } catch { }
                 return;
             }
             Application.Run(new MainForm(new string[] { p }));

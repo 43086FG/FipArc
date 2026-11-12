@@ -1,8 +1,8 @@
 # FipArc
 
-**A Windows archiver with its own format `.fip`, an Explorer-style archive browser, and a built-in media player / image viewer / text editor.**
+**A Windows archiver with its own format `.fip`, an Explorer-style archive browser, and a built-in image viewer / text editor.**
 
-> Windows 压缩工具，自带 `.fip` 专有格式、资源管理器式压缩包浏览、内置播放器 / 看图 / 文本编辑器。
+> Windows 压缩工具，自带 `.fip` 专有格式、资源管理器式压缩包浏览、内置看图 / 文本编辑器。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Platform](https://img.shields.io/badge/platform-Windows%207%20%7C%208%20%7C%2010%20%7C%2011-lightgrey)
@@ -18,8 +18,7 @@
   Encrypted archives ask for the password first.
 - **Its own format `.fip`** — AES-encrypted headers and payload.
 - **Compress to** `.fip` `.zip` `.tar` `.gz` `.tar.gz`, plus 7-Zip / RAR support through a bundled 7-Zip engine.
-- **Media player** — WPF (Media Foundation) with a DirectShow fallback, click the video to pause, optional LAV codec pack for H.264 / OGG / Opus / HEVC / AV1.
-- **Image viewer** and **text editor** for files inside archives.
+- **Image viewer** and **text editor** with zoom, rotate, save — for files inside archives too.
 - **Per-user install** to `%APPDATA%\FipArc` — **no administrator rights needed**.
 - **7 languages** — English, 日本語, 한국어, Español, Русский, 繁體中文, 简体中文.
   Chosen at install time, changeable in **Tools → Language**.
@@ -49,7 +48,7 @@ Grab `FipArcSetup.exe` from [Releases](../../releases). Single file, no dependen
 |---|---|
 | OS | Windows 7 SP1 / 8 / 8.1 / 10 / 11 (x64) |
 | Runtime | .NET Framework 4.8 (included in Windows 10 1903+ / 11) |
-| Disk | ~40 MB |
+| Disk | ~10 MB |
 
 ---
 
@@ -141,8 +140,6 @@ FipArc/
 │  ├─ FipCore.cs            .fip container format
 │  ├─ ZipCrypto.cs          ZipCrypto encryption
 │  ├─ SevenZip.cs           Wrapper around the bundled 7z.exe
-│  ├─ MediaForm.cs          Media player window
-│  ├─ Player.cs             DirectShow interop (fallback engine)
 │  ├─ ImageViewerForm.cs    Image viewer
 │  ├─ TextViewerForm.cs     Text editor
 │  ├─ Playable.cs           File-kind detection
@@ -190,6 +187,5 @@ Third-party components keep their own licenses:
 | Component | License | Notes |
 |---|---|---|
 | 7-Zip (`7z.exe`, `7z.dll`) | LGPL-2.1 + unRAR restriction | Bundled unmodified; see `vendor/full/License.txt` |
-| LAV Filters | GPL-2.0 | Optional, downloaded by the user, installed on demand |
 
 The MIT license covers the FipArc sources in this repository only.

@@ -71,9 +71,6 @@ namespace FipArc
             ToolStripMenuItem mTool = new ToolStripMenuItem(Lang.S("menu.tools"));
             AddItem(mTool, "注册 / 修复右键菜单", delegate { RepairShell(); });
             AddItem(mTool, "刷新文件图标", delegate { Shell.RefreshShell(); Log("已请求刷新图标缓存"); });
-            AddItem(mTool, Shell.LavInstalled()
-                ? "✔ 内置解码器已安装（LAV）"
-                : "安装内置解码器（LAV，需管理员）", delegate { InstallLav(); });
             AddItem(mTool, "设为默认应用…", delegate
             {
                 Shell.OpenDefaultAppsSettings();
@@ -715,8 +712,8 @@ namespace FipArc
         public void OpenWithBuiltin(string path)
         {
             if (Playable.IsImage(path)) { ImageViewerForm f = new ImageViewerForm(); f.Show(this); f.LoadFile(path); }
-            else if (Playable.IsMedia(path)) { MediaForm f = new MediaForm(); f.Show(this); f.LoadFile(path); }
             else if (Playable.IsText(path)) { TextViewerForm f = new TextViewerForm(); f.Show(this); f.LoadFile(path); }
+            // 音视频不再内置播放，交给系统默认播放器
             else Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
         }
 
@@ -1036,104 +1033,6 @@ namespace FipArc
         }
 
         // ==================== 工具 ====================
-        /// <summary>清除缓存：界面日志 + 各类临时文件 + 安装/卸载诊断日志</summary>
-        /// <summary>
-        /// 安装内置解码器 LAV Filters。
-        /// 为什么需要它：系统自带的 DirectShow/Media Foundation 缺很多格式的解码器
-        /// （H.264 / Ogg / Opus / HEVC 等），LAV 自带的 FFmpeg 能全覆盖。
-        /// 它必须在 HKLM 注册（regsvr32 需要管理员），所以这里用 UAC 提权跑一次批处理。
-        /// </summary>
-        void InstallLav()
-        {
-            string appDir = Application.StartupPath;
-            string zip = Path.Combine(appDir, "LAVFilters.zip");
-            if (!File.Exists(zip))
-            {
-                MessageBox.Show(this, "安装目录里找不到 LAVFilters.zip，请重新安装本软件。",
-                    "找不到解码器包", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (Shell.LavInstalled())
-            {
-                MessageBox.Show(this, "内置解码器（LAV）已经安装好了，可以直接播放各类音视频。",
-                    "已安装", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            string lavDir = Path.Combine(appDir, "lav");
-            try
-            {
-                Cursor = Cursors.WaitCursor;
-                SetStatus("正在解压解码器…");
-                Directory.CreateDirectory(lavDir);
-                if (File.Exists(Path.Combine(appDir, "7z.exe")))
-                {
-                    System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo(
-                        Path.Combine(appDir, "7z.exe"),
-                        "x \"" + zip + "\" -o\"" + lavDir + "\" -y");
-                    psi.UseShellExecute = false;
-                    psi.CreateNoWindow = true;
-                    System.Diagnostics.Process pz = System.Diagnostics.Process.Start(psi);
-                    pz.WaitForExit(120000);
-                }
-                else throw new Exception("缺少 7z.exe，无法解压解码器包。");
-            }
-            catch (Exception ex)
-            {
-                Cursor = Cursors.Default;
-                MessageBox.Show(this, "解压解码器失败：" + ex.Message, "失败",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            finally { Cursor = Cursors.Default; }
-
-            // 一次提权，把三个滤镜全注册掉（只弹一次 UAC）
-            string bat = Path.Combine(Path.GetTempPath(), "fiparc_lav_install.bat");
-            try
-            {
-                System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                sb.AppendLine("@echo off");
-                sb.AppendLine("cd /d \"" + lavDir + "\"");
-                sb.AppendLine("regsvr32 /s LAVSplitter.ax");
-                sb.AppendLine("regsvr32 /s LAVAaudio.ax".Replace("LAVAaudio", "LAVA" + "udio"));
-                sb.AppendLine("regsvr32 /s LAVVideo.ax");
-                sb.AppendLine("exit");
-                File.WriteAllText(bat, sb.ToString(), System.Text.Encoding.Default);
-
-                System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo(bat);
-                psi.UseShellExecute = true;
-                psi.Verb = "runas";                 // 触发 UAC
-                psi.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-                System.Diagnostics.Process p = System.Diagnostics.Process.Start(psi);
-                p.WaitForExit();
-
-                if (Shell.LavInstalled())
-                {
-                    Log("内置解码器（LAV）安装成功。");
-                    MessageBox.Show(this,
-                        "解码器安装成功。\r\n\r\n" +
-                        "现在可以播放 H.264 的 MP4、OGG、Opus、HEVC、AV1 等几乎所有格式了。\r\n" +
-                        "如果播放器还开着，关掉重开一次即可。",
-                        "安装完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    Log("[警告] LAV 注册未生效，可能被 UAC 取消或被安全软件拦截。");
-                    MessageBox.Show(this,
-                        "注册没有生效。可能你取消了管理员确认，或者被杀毒软件拦截。\r\n\r\n" +
-                        "可以手动运行安装目录下 lav\\install_splitter.bat、install_audio.bat、install_video.bat" +
-                        "（右键 → 以管理员身份运行）。",
-                        "未生效", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            catch (Exception ex3)
-            {
-                Log("[取消] 解码器安装被取消：" + ex3.Message);
-                MessageBox.Show(this, "已取消（没有管理员权限就无法注册解码器）。", "取消",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
 
         void ClearCache()
         {
