@@ -166,7 +166,23 @@ namespace FipArc
             A("setup.browse2",  "Browse…", "参照…", "찾아보기…", "Examinar…", "Обзор…", "瀏覽…", "浏览…");
             A("setup.desktop2", "Create desktop shortcut", "デスクトップにショートカットを作成", "바탕 화면에 바로 가기 만들기", "Crear acceso directo en el escritorio", "Создать ярлык на рабочем столе", "建立桌面捷徑", "创建桌面快捷方式");
             A("setup.install2", "Install", "インストール", "설치", "Instalar", "Установить", "安裝", "安装");
-            A("setup.cancel2",  "Cancel", "キャンセル", "취소", "Cancelar", "Отмена", "取消", "取消");            A("setup.uninstall","Uninstall FipArc", "FipArc をアンインストール", "FipArc 제거", "Desinstalar FipArc", "Удалить FipArc", "解除安裝 FipArc", "卸载 FipArc");
+            A("setup.cancel2",  "Cancel", "キャンセル", "취소", "Cancelar", "Отмена", "取消", "取消");            A("setup.installing","Installing…", "インストール中…", "설치 중…", "Instalando…", "Установка…", "正在安裝…", "正在安装…");
+            A("setup.writing",  "Writing program files…", "プログラムを書き込み中…", "프로그램 파일 쓰는 중…", "Escribiendo archivos…", "Запись файлов программы…", "正在寫入程式檔案…", "正在写入程序文件…");
+            A("setup.registry", "Registering context menu…", "右クリックメニューを登録中…", "상황별 메뉴 등록 중…", "Registrando menú…", "Регистрация меню…", "正在登錄右鍵選單…", "正在注册右键菜单…");
+            A("setup.icons",    "Updating file icons…", "ファイルアイコンを更新中…", "파일 아이콘 갱신 중…", "Actualizando iconos…", "Обновление значков…", "正在更新檔案圖示…", "正在更新文件图标…");
+            A("setup.shortcut", "Creating desktop shortcut…", "デスクトップにショートカットを作成中…", "바탕 화면 바로 가기 만드는 중…", "Creando acceso directo…", "Создание ярлыка…", "正在建立桌面捷徑…", "正在创建桌面快捷方式…");
+            A("setup.finished", "Installed!", "インストール完了！", "설치 완료!", "¡Instalado!", "Установлено!", "安裝完成！", "安装完成！");
+            A("setup.finished2","Installation complete. Right-click files to compress or extract.",
+                                "インストールが完了しました。ファイルを右クリックして圧縮・展開できます。",
+                                "설치가 완료되었습니다. 파일을 마우스 오른쪽 버튼으로 압축하거나 풀 수 있습니다.",
+                                "Instalación completada. Haz clic derecho para comprimir o extraer.",
+                                "Установка завершена. Щёлкните файл правой кнопкой для сжатия или распаковки.",
+                                "安裝完成。可對檔案按右鍵壓縮或解壓縮。",
+                                "安装完成。可直接右键压缩或解压文件。");
+            A("setup.askrun",   "Launch FipArc now?", "FipArc を起動しますか？", "FipArc를 지금 실행할까요?", "¿Iniciar FipArc ahora?", "Запустить FipArc сейчас?", "要立即啟動 FipArc 嗎？", "是否立即启动 FipArc？");
+            A("setup.where",    "Installed to", "インストール先", "설치 위치", "Instalado en", "Установлено в", "安裝於", "安装位置");
+            A("setup.finish",   "Finish", "完了", "완료", "Finalizar", "Готово", "完成", "完成");
+            A("setup.done.title","Installation complete", "インストール完了", "설치 완료", "Instalación completada", "Установка завершена", "安裝完成", "安装完成");            A("setup.uninstall","Uninstall FipArc", "FipArc をアンインストール", "FipArc 제거", "Desinstalar FipArc", "Удалить FipArc", "解除安裝 FipArc", "卸载 FipArc");
         }
 
         /// <summary>当前语言索引</summary>

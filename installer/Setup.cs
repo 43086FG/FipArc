@@ -34,7 +34,7 @@ namespace FipArcSetup
         public const string MENU_NAME = "FipArc";
 #endif
         public const string APP_SUB = "压缩工具";
-        public const string VERSION = "1.2.2";
+        public const string VERSION = "1.2.3";
         public const string PUBLISHER = "43086FG";
 
         public static string DefaultDir
@@ -597,7 +597,7 @@ namespace FipArcSetup
             Controls.Add(page2);
 
             status = new Label();
-            status.Text = "正在安装…";
+            status.Text = FipArc.Lang.S("setup.installing");
             status.AutoSize = true;
             status.Location = new Point(22, 40);
             page2.Controls.Add(status);
@@ -609,7 +609,7 @@ namespace FipArcSetup
             page2.Controls.Add(bar);
 
             Label tip = new Label();
-            tip.Text = "安装完成后可直接右键压缩 / 解压文件。";
+            tip.Text = FipArc.Lang.S("setup.finished2");
             tip.AutoSize = true;
             tip.ForeColor = Color.Gray;
             tip.Location = new Point(24, 108);
@@ -655,27 +655,30 @@ namespace FipArcSetup
 
                 try
                 {
-                    status.Text = "正在写入程序文件…"; bar.Value = 15; Application.DoEvents();
+                    status.Text = FipArc.Lang.S("setup.writing"); bar.Value = 15; Application.DoEvents();
                     Installer.Install(dir);
 
-                    status.Text = "正在注册右键菜单…"; bar.Value = 55; Application.DoEvents();
-                    status.Text = "正在替换文件图标…"; bar.Value = 80; Application.DoEvents();
+                    status.Text = FipArc.Lang.S("setup.registry"); bar.Value = 55; Application.DoEvents();
+                    status.Text = FipArc.Lang.S("setup.icons"); bar.Value = 80; Application.DoEvents();
                     FipArc.Shell.RefreshShell();
 
                     if (desktop.Checked)
                     {
-                        status.Text = "正在创建桌面快捷方式…"; bar.Value = 90; Application.DoEvents();
+                        status.Text = FipArc.Lang.S("setup.shortcut"); bar.Value = 90; Application.DoEvents();
                         CreateShortcut(dir);
                     }
 
                     bar.Value = 100;
-                    status.Text = "安装完成！"; Application.DoEvents();
+                    status.Text = FipArc.Lang.S("setup.finished"); Application.DoEvents();
+            next.Text = FipArc.Lang.S("setup.finish");
+            next.Enabled = true;
+            cancel.Visible = false;
 
                     DialogResult r = MessageBox.Show(this,
-                        "安装完成！" + Environment.NewLine + Environment.NewLine +
-                        "安装位置：" + dir + Environment.NewLine + Environment.NewLine +
-                        "是否立即启动？",
-                        "安装完成", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                        FipArc.Lang.S("setup.finished") + Environment.NewLine + Environment.NewLine +
+                        FipArc.Lang.S("setup.where") + ": " + dir + Environment.NewLine + Environment.NewLine +
+                        FipArc.Lang.S("setup.askrun"),
+                        FipArc.Lang.S("setup.done.title"), MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                     if (r == DialogResult.Yes)
                     {
                         try { Process.Start(Path.Combine(dir, Program.ExeName)); }
