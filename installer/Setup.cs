@@ -480,7 +480,7 @@ namespace FipArcSetup
         {
             Text = Program.APP_NAME + " 安装程序";
             StartPosition = FormStartPosition.CenterScreen;
-            ClientSize = new Size(560, 380);
+            ClientSize = new Size(580, 470);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             // 指定中文字体：默认的 Segoe UI 行距太挤，中文会互相压住
@@ -553,14 +553,15 @@ namespace FipArcSetup
 
             Label l2 = new Label();
             l2.Text = "将安装以下内容：\n" +
-                      "   · FipArc.exe        主程序（压缩 / 解压 / 格式转换）\n" +
-                      "   · app.ico           程序与文件图标\n" +
-                      "   · FipArcSetup.exe   卸载程序\n" +
+                      "   · FipArc.exe          主程序（压缩 / 解压 / 播放 / 看图 / 编辑）\n" +
+                      "   · app.ico             程序图标\n" +
+                      "   · 7z.exe / 7z.dll     7-Zip 引擎（支持 .7z / .rar）\n" +
+                      "   · Uninstall.exe       卸载程序\n" +
                       "\n" +
-                      "安装后会在鼠标右键菜单加入「压缩为」级联菜单和「解压到当前文件夹」，\n" +
-                      "并按文件类型提供专属的「转换为 FIP / 还原为 XXX」菜单。";
+                      "安装后会在鼠标右键菜单加入「压缩为」级联菜单和「解压到当前文件夹」。\n" +
+                      "只会接管 .fip 关联，其它文件类型保持系统默认，不改图标。";
             l2.AutoSize = false;
-            l2.Size = new Size(515, 140);
+            l2.Size = new Size(535, 150);
             l2.Location = new Point(22, 82);
             l2.ForeColor = Color.FromArgb(60, 60, 60);
             page1.Controls.Add(l2);
@@ -575,12 +576,12 @@ namespace FipArcSetup
             pathBox = new TextBox();
             pathBox.Text = string.IsNullOrEmpty(existing) ? Program.DefaultDir : existing;
             pathBox.Location = new Point(96, 231);
-            pathBox.Size = new Size(340, 24);
+            pathBox.Size = new Size(380, 24);
             page1.Controls.Add(pathBox);
 
             Button browse = new Button();
             browse.Text = "浏览…";
-            browse.Location = new Point(444, 230);
+            browse.Location = new Point(482, 230);
             browse.Size = new Size(80, 26);
             browse.Click += delegate
             {
