@@ -34,7 +34,7 @@ namespace FipArcSetup
         public const string MENU_NAME = "FipArc";
 #endif
         public const string APP_SUB = "压缩工具";
-        public const string VERSION = "1.2.4";
+        public const string VERSION = "1.2.5";
         public const string PUBLISHER = "43086FG";
 
         public static string DefaultDir
@@ -468,7 +468,7 @@ namespace FipArcSetup
         {
             Text = Program.APP_NAME + " 安装程序";
             StartPosition = FormStartPosition.CenterScreen;
-            ClientSize = new Size(580, 470);
+            ClientSize = new Size(580, 390);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             // 指定中文字体：默认的 Segoe UI 行距太挤，中文会互相压住
@@ -549,7 +549,7 @@ namespace FipArcSetup
                       "安装后会在鼠标右键菜单加入「压缩为」级联菜单和「解压到当前文件夹」。\n" +
                       "只会接管 .fip 关联，其它文件类型保持系统默认，不改图标。";
             l2.AutoSize = false;
-            l2.Size = new Size(535, 150);
+            l2.Size = new Size(535, 56);
             l2.Location = new Point(22, 82);
             l2.ForeColor = Color.FromArgb(60, 60, 60);
             page1.Controls.Add(l2);
@@ -557,19 +557,19 @@ namespace FipArcSetup
             Label l3 = new Label();
             l3.Text = "安装路径：";
             l3.AutoSize = true;
-            l3.Location = new Point(22, 234);
+            l3.Location = new Point(22, 150);
             page1.Controls.Add(l3);
 
             string existing = Installer.FoundDir();
             pathBox = new TextBox();
             pathBox.Text = string.IsNullOrEmpty(existing) ? Program.DefaultDir : existing;
-            pathBox.Location = new Point(96, 231);
+            pathBox.Location = new Point(96, 147);
             pathBox.Size = new Size(380, 24);
             page1.Controls.Add(pathBox);
 
             Button browse = new Button();
             browse.Text = "浏览…";
-            browse.Location = new Point(482, 230);
+            browse.Location = new Point(482, 146);
             browse.Size = new Size(80, 26);
             browse.Click += delegate
             {
@@ -587,7 +587,7 @@ namespace FipArcSetup
             desktop.Text = "创建桌面快捷方式";
             desktop.Checked = true;
             desktop.AutoSize = true;
-            desktop.Location = new Point(96, 264);
+            desktop.Location = new Point(96, 182);
             page1.Controls.Add(desktop);
 
             // ---- 第 2 页：进度 ----

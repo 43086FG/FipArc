@@ -156,12 +156,12 @@ namespace FipArc
                                "语言可以稍后在「工具 → 语言」里修改。");
             A("setup.loc",      "Choose install location", "インストール先の選択", "설치 위치 선택", "Elegir ubicación", "Выберите папку установки", "選擇安裝位置", "选择安装位置");
             A("setup.desc",     "Installs FipArc: archiver, image viewer and text editor.\r\nOnly the .fip association is claimed; other file types keep their system defaults.",
-                                "FipArc（圧縮・画像表示・テキスト編集）をインストールします。`r`n関連付けは .fip のみ。他のファイル形式はシステムの既定のままです。",
-                                "FipArc(압축·이미지 보기·텍스트 편집)를 설치합니다.`r`n.fip 연결만 가져가며, 다른 형식은 시스템 기본값을 유지합니다.",
-                                "Instala FipArc: compresor, visor de imágenes y editor de texto.`r`nSolo se asocia .fip; el resto mantiene sus valores del sistema.",
-                                "Устанавливает FipArc: архиватор, просмотр изображений и редактор текста.`r`nСвязывается только .fip, остальные типы остаются системными.",
-                                "安裝 FipArc：壓縮、看圖、文字編輯。`r`n只接管 .fip 關聯，其它檔案類型維持系統預設。",
-                                "安装 FipArc：压缩、看图、文本编辑。`r`n只接管 .fip 关联，其它文件类型保持系统默认。");
+                                "FipArc（圧縮・画像表示・テキスト編集）をインストールします。\r\n関連付けは .fip のみ。他のファイル形式はシステムの既定のままです。",
+                                "FipArc(압축·이미지 보기·텍스트 편집)를 설치합니다.\r\n.fip 연결만 가져가며, 다른 형식은 시스템 기본값을 유지합니다.",
+                                "Instala FipArc: compresor, visor de imágenes y editor de texto.\r\nSolo se asocia .fip; el resto mantiene sus valores del sistema.",
+                                "Устанавливает FipArc: архиватор, просмотр изображений и редактор текста.\r\nСвязывается только .fip, остальные типы остаются системными.",
+                                "安裝 FipArc：壓縮、看圖、文字編輯。\r\n只接管 .fip 關聯，其它檔案類型維持系統預設。",
+                                "安装 FipArc：压缩、看图、文本编辑。\r\n只接管 .fip 关联，其它文件类型保持系统默认。");
             A("setup.path",     "Install path:", "インストール先：", "설치 경로:", "Ruta de instalación:", "Путь установки:", "安裝路徑：", "安装路径：");
             A("setup.browse2",  "Browse…", "参照…", "찾아보기…", "Examinar…", "Обзор…", "瀏覽…", "浏览…");
             A("setup.desktop2", "Create desktop shortcut", "デスクトップにショートカットを作成", "바탕 화면에 바로 가기 만들기", "Crear acceso directo en el escritorio", "Создать ярлык на рабочем столе", "建立桌面捷徑", "创建桌面快捷方式");
