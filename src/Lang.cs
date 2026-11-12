@@ -222,23 +222,6 @@ namespace FipArc
         /// <summary>根据系统区域猜一个默认语言（仅首次安装时用）</summary>
         public static int DetectSystem()
         {
-            // 已经装过 / 选过语言时，沿用上次的选择（重装不会被打回系统默认）
-            try
-            {
-                using (RegistryKey k = Registry.CurrentUser.OpenSubKey(REG_KEY))
-                {
-                    if (k != null)
-                    {
-                        string code = k.GetValue(REG_VALUE) as string;
-                        if (!string.IsNullOrEmpty(code))
-                        {
-                            for (int i = 0; i < Codes.Length; i++)
-                                if (string.Equals(Codes[i], code, StringComparison.OrdinalIgnoreCase)) return i;
-                        }
-                    }
-                }
-            }
-            catch { }
 
             try
             {
