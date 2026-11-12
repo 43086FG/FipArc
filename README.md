@@ -26,10 +26,14 @@
 
 ## Screenshots
 
-<!-- 把你的截图放在 docs/ 下, 文件名保持下面这几个 -->
-| Archive browser | Media player |
+| Archive browser / 压缩包浏览 | Image viewer / 图片查看 |
 |---|---|
-| `docs/screenshot-browser.png` | `docs/screenshot-player.png` |
+| ![Archive browser](docs/screenshot-browser.png) | ![Image viewer](docs/screenshot-viewer.png) |
+
+Folder tree on the left, file details on the right — browse `.zip` `.7z` `.rar` `.fip`
+without extracting, then drag anything out into Explorer.
+
+左边文件夹树、右边文件详情 —— 不用解压就能浏览，还能直接拖到资源管理器。
 
 ---
 
