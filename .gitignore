@@ -1,0 +1,38 @@
+# ---------- 构建产物 ----------
+build/
+build_se/
+*.exe
+*.pdb
+FipArcSetup.exe
+FipArcSetup.zip
+
+# ---------- 第三方二进制 ----------
+# 体积太大，不放进仓库；构建前按 docs/BUILD.md 自行下载
+vendor/
+
+# ---------- 临时 / 测试产物 ----------
+TestResults/
+tests/_work/
+*.log
+
+# ---------- 图片 ----------
+*.png
+!assets/**/*.png
+!docs/**/*.png
+
+# ---------- IDE ----------
+.vs/
+.vscode/
+*.user
+*.suo
+*.cache
+
+# ---------- 旧结构遗留 ----------
+完整版
+精简版
+完整版/
+精简版/
+
+# ---------- Windows ----------
+Thumbs.db
+desktop.ini
