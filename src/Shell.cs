@@ -339,7 +339,6 @@ namespace FipArc
             }
             try { Del(@"Software\FipArc\Capabilities"); } catch { }
             try { Del(@"Software\FipArcSE\Capabilities"); } catch { }
-            try { Del(@"Software\FipArcSE"); } catch { }
 
             // 旧版本在「默认应用」列表里注册过自己，一并撤销
             try
@@ -369,10 +368,7 @@ namespace FipArc
             // 还原被改过图标的系统扩展名（.zip/.7z 等回到系统默认图标）
             try { RestoreIcons(); } catch { }
 
-            // 卸载后清掉本软件的全部设置（语言、图标备份），
             // 这样重装时会重新按系统语言来，不会记得上次的选择。
-            try { Del(@"Software\FipArc"); } catch { }
-            try { Del(@"Software\FipArcSE"); } catch { }
         }
         static void RegisterOwnProgids(string exePath, string iconPath)
         {
