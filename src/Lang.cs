@@ -79,6 +79,34 @@ namespace FipArc
                            "Открыт {0} ({1}) - записей {2} ({3} папок / {4} файлов), распаковано {5}",
                            "已開啟 {0}（{1}）- 共 {2} 項（{3} 個資料夾 / {4} 個檔案），解壓後 {5}",
                            "已打开 {0}（{1}）- 共 {2} 项（{3} 个文件夹 / {4} 个文件），解压后 {5}");
+            // ---------------- 主窗口：下拉菜单项 ----------------
+            A("file.exit",    "Exit", "終了", "종료", "Salir", "Выход", "結束", "退出");
+            A("pack.zip",     "Compress to ZIP…", "ZIP に圧縮…", "ZIP로 압축…", "Comprimir a ZIP…", "Сжать в ZIP…", "壓縮為 ZIP…", "压缩为 ZIP…");
+            A("pack.tar",     "Compress to TAR…", "TAR に圧縮…", "TAR로 압축…", "Comprimir a TAR…", "Сжать в TAR…", "壓縮為 TAR…", "压缩为 TAR…");
+            A("pack.gz",      "Compress to GZ (single file)…", "GZ に圧縮（単一ファイル）…", "GZ로 압축(단일 파일)…", "Comprimir a GZ (un archivo)…", "Сжать в GZ (один файл)…", "壓縮為 GZ（單一檔案）…", "压缩为 GZ（单文件）…");
+            A("pack.tgz",     "Compress to TAR.GZ…", "TAR.GZ に圧縮…", "TAR.GZ로 압축…", "Comprimir a TAR.GZ…", "Сжать в TAR.GZ…", "壓縮為 TAR.GZ…", "压缩为 TAR.GZ…");
+            A("pack.add",     "Add files to current archive…", "書庫にファイルを追加…", "압축 파일에 추가…", "Agregar archivos al archivo…", "Добавить файлы в архив…", "新增檔案至壓縮檔…", "添加文件到当前压缩包…");
+            A("extract.here", "Extract here", "ここに展開", "여기에 풀기", "Extraer aquí", "Извлечь сюда", "解壓縮到此處", "解压到当前文件夹");
+            A("extract.view", "Browse archive contents", "書庫の中身を見る", "압축 파일 내용 보기", "Examinar contenido", "Просмотр содержимого", "瀏覽壓縮檔內容", "查看压缩包内容");
+            A("tools.repair2",   "Register / repair context menu", "右クリックメニューを登録 / 修復", "상황별 메뉴 등록 / 복구", "Registrar / reparar menú", "Зарегистрировать / восстановить меню", "登錄 / 修復右鍵選單", "注册 / 修复右键菜单");
+            A("tools.refresh2",  "Refresh file icons", "ファイルアイコンを更新", "파일 아이콘 새로 고침", "Actualizar iconos", "Обновить значки файлов", "重新整理檔案圖示", "刷新文件图标");
+            A("tools.defaults2", "Set as default app…", "既定のアプリに設定…", "기본 앱으로 설정…", "Establecer como app predeterminada…", "Сделать приложением по умолчанию…", "設為預設應用程式…", "设为默认应用…");
+            A("tools.cache2",    "Clear cache…", "キャッシュを削除…", "캐시 지우기…", "Borrar caché…", "Очистить кэш…", "清除快取…", "清除缓存…");
+            A("tools.settings",  "Settings", "設定", "설정", "Configuración", "Настройки", "設定", "设置");
+            A("tools.uninstall2","Uninstall…", "アンインストール…", "제거…", "Desinstalar…", "Удалить…", "解除安裝…", "卸载…");
+            A("help.about2",     "About", "このソフトについて", "정보", "Acerca de", "О программе", "關於", "关于");
+
+            // ---------------- 设置窗口 ----------------
+            A("set.title",   "Settings", "設定", "설정", "Configuración", "Настройки", "設定", "设置");
+            A("set.language","Display language", "表示言語", "표시 언어", "Idioma de la interfaz", "Язык интерфейса", "介面語言", "界面语言");
+            A("set.restart", "The application will restart to apply the new language.",
+                             "新しい言語を適用するため再起動します。",
+                             "새 언어를 적용하기 위해 다시 시작합니다.",
+                             "La aplicación se reiniciará para aplicar el idioma.",
+                             "Приложение перезапустится, чтобы применить язык.",
+                             "將重新啟動以套用新語言。",
+                             "将重启程序以应用新语言。");
+            A("set.close",   "Close", "閉じる", "닫기", "Cerrar", "Закрыть", "關閉", "关闭");
             // ---------------- 主窗口：工具栏 ----------------
             A("tb.open",    "Open", "開く", "열기", "Abrir", "Открыть", "開啟", "打开");
             A("tb.pack",    "Compress", "圧縮", "압축", "Comprimir", "Сжать", "壓縮", "压缩");
@@ -126,7 +154,19 @@ namespace FipArc
                                "Язык можно изменить позже: Инструменты → Язык.",
                                "語言可稍後在「工具 → 語言」變更。",
                                "语言可以稍后在「工具 → 语言」里修改。");
-            A("setup.uninstall","Uninstall FipArc", "FipArc をアンインストール", "FipArc 제거", "Desinstalar FipArc", "Удалить FipArc", "解除安裝 FipArc", "卸载 FipArc");
+            A("setup.loc",      "Choose install location", "インストール先の選択", "설치 위치 선택", "Elegir ubicación", "Выберите папку установки", "選擇安裝位置", "选择安装位置");
+            A("setup.desc",     "Installs FipArc: archiver, image viewer and text editor.\r\nOnly the .fip association is claimed; other file types keep their system defaults.",
+                                "FipArc（圧縮・画像表示・テキスト編集）をインストールします。`r`n関連付けは .fip のみ。他のファイル形式はシステムの既定のままです。",
+                                "FipArc(압축·이미지 보기·텍스트 편집)를 설치합니다.`r`n.fip 연결만 가져가며, 다른 형식은 시스템 기본값을 유지합니다.",
+                                "Instala FipArc: compresor, visor de imágenes y editor de texto.`r`nSolo se asocia .fip; el resto mantiene sus valores del sistema.",
+                                "Устанавливает FipArc: архиватор, просмотр изображений и редактор текста.`r`nСвязывается только .fip, остальные типы остаются системными.",
+                                "安裝 FipArc：壓縮、看圖、文字編輯。`r`n只接管 .fip 關聯，其它檔案類型維持系統預設。",
+                                "安装 FipArc：压缩、看图、文本编辑。`r`n只接管 .fip 关联，其它文件类型保持系统默认。");
+            A("setup.path",     "Install path:", "インストール先：", "설치 경로:", "Ruta de instalación:", "Путь установки:", "安裝路徑：", "安装路径：");
+            A("setup.browse2",  "Browse…", "参照…", "찾아보기…", "Examinar…", "Обзор…", "瀏覽…", "浏览…");
+            A("setup.desktop2", "Create desktop shortcut", "デスクトップにショートカットを作成", "바탕 화면에 바로 가기 만들기", "Crear acceso directo en el escritorio", "Создать ярлык на рабочем столе", "建立桌面捷徑", "创建桌面快捷方式");
+            A("setup.install2", "Install", "インストール", "설치", "Instalar", "Установить", "安裝", "安装");
+            A("setup.cancel2",  "Cancel", "キャンセル", "취소", "Cancelar", "Отмена", "取消", "取消");            A("setup.uninstall","Uninstall FipArc", "FipArc をアンインストール", "FipArc 제거", "Desinstalar FipArc", "Удалить FipArc", "解除安裝 FipArc", "卸载 FipArc");
         }
 
         /// <summary>当前语言索引</summary>
@@ -182,6 +222,24 @@ namespace FipArc
         /// <summary>根据系统区域猜一个默认语言（仅首次安装时用）</summary>
         public static int DetectSystem()
         {
+            // 已经装过 / 选过语言时，沿用上次的选择（重装不会被打回系统默认）
+            try
+            {
+                using (RegistryKey k = Registry.CurrentUser.OpenSubKey(REG_KEY))
+                {
+                    if (k != null)
+                    {
+                        string code = k.GetValue(REG_VALUE) as string;
+                        if (!string.IsNullOrEmpty(code))
+                        {
+                            for (int i = 0; i < Codes.Length; i++)
+                                if (string.Equals(Codes[i], code, StringComparison.OrdinalIgnoreCase)) return i;
+                        }
+                    }
+                }
+            }
+            catch { }
+
             try
             {
                 string n = System.Globalization.CultureInfo.CurrentUICulture.Name;   // zh-CN / ja-JP / ...

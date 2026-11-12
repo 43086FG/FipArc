@@ -42,23 +42,23 @@ namespace FipArc
             ToolStripMenuItem mFile = new ToolStripMenuItem(Lang.S("menu.file"));
             mFile.DropDownItems.Add(Lang.S("file.open"), null, delegate { OpenArchiveDialog(); });
             mFile.DropDownItems.Add(new ToolStripSeparator());
-            mFile.DropDownItems.Add("退出", null, delegate { Close(); });
+            mFile.DropDownItems.Add(Lang.S("file.exit"), null, delegate { Close(); });
             menu.Items.Add(mFile);
 
             ToolStripMenuItem mComp = new ToolStripMenuItem(Lang.S("menu.pack"));
             AddItem(mComp, Lang.S("pack.fip"), delegate { PackSelected(".fip"); });
-            AddItem(mComp, "压缩为 ZIP…", delegate { PackSelected(".zip"); });
-            AddItem(mComp, "压缩为 TAR…", delegate { PackSelected(".tar"); });
-            AddItem(mComp, "压缩为 GZ（单文件）…", delegate { PackSelected(".gz"); });
-            AddItem(mComp, "压缩为 TAR.GZ…", delegate { PackSelected(".tar.gz"); });
+            AddItem(mComp, Lang.S("pack.zip"), delegate { PackSelected(".zip"); });
+            AddItem(mComp, Lang.S("pack.tar"), delegate { PackSelected(".tar"); });
+            AddItem(mComp, Lang.S("pack.gz"), delegate { PackSelected(".gz"); });
+            AddItem(mComp, Lang.S("pack.tgz"), delegate { PackSelected(".tar.gz"); });
             mComp.DropDownItems.Add(new ToolStripSeparator());
-            AddItem(mComp, "添加文件到当前压缩包…", delegate { AddToArchive(); });
+            AddItem(mComp, Lang.S("pack.add"), delegate { AddToArchive(); });
             menu.Items.Add(mComp);
 
             ToolStripMenuItem mExt = new ToolStripMenuItem(Lang.S("menu.extract"));
             AddItem(mExt, Lang.S("extract.to"), delegate { ExtractTo(false); });
-            AddItem(mExt, "解压到当前文件夹", delegate { ExtractTo(true); });
-            AddItem(mExt, "查看压缩包内容", delegate { OpenArchiveDialog(); });
+            AddItem(mExt, Lang.S("extract.here"), delegate { ExtractTo(true); });
+            AddItem(mExt, Lang.S("extract.view"), delegate { OpenArchiveDialog(); });
             menu.Items.Add(mExt);
 
 #if !SE
@@ -69,14 +69,15 @@ namespace FipArc
 #endif
 
             ToolStripMenuItem mTool = new ToolStripMenuItem(Lang.S("menu.tools"));
-            AddItem(mTool, "注册 / 修复右键菜单", delegate { RepairShell(); });
-            AddItem(mTool, "刷新文件图标", delegate { Shell.RefreshShell(); Log("已请求刷新图标缓存"); });
-            AddItem(mTool, "设为默认应用…", delegate
+            AddItem(mTool, Lang.S("tools.repair2"), delegate { RepairShell(); });
+            AddItem(mTool, Lang.S("tools.refresh2"), delegate { Shell.RefreshShell(); Log(Lang.S("tools.refresh2")); });
+            AddItem(mTool, Lang.S("tools.defaults2"), delegate
             {
                 Shell.OpenDefaultAppsSettings();
                 Log("已打开「默认应用」设置页：找到 FipArc，点进去可以把 播放器 / 看图 / 文本 设成本软件。");
             });
-            AddItem(mTool, "清除缓存…", delegate { ClearCache(); });
+            AddItem(mTool, Lang.S("tools.settings"), delegate { OpenSettings(); });
+            AddItem(mTool, Lang.S("tools.cache2"), delegate { ClearCache(); });
             mTool.DropDownItems.Add(new ToolStripSeparator());
 
             // ---- 语言：界面上永远显示各语言自己的名字 ----
@@ -99,11 +100,11 @@ namespace FipArc
             mTool.DropDownItems.Add(mLang);
 
             mTool.DropDownItems.Add(new ToolStripSeparator());
-            AddItem(mTool, "卸载本软件…", delegate { LaunchUninstall(); });
+            AddItem(mTool, Lang.S("tools.uninstall2"), delegate { LaunchUninstall(); });
             menu.Items.Add(mTool);
 
             ToolStripMenuItem mHelp = new ToolStripMenuItem(Lang.S("menu.help"));
-            AddItem(mHelp, "关于", delegate { ShowAbout(); });
+            AddItem(mHelp, Lang.S("help.about2"), delegate { ShowAbout(); });
             menu.Items.Add(mHelp);
 
             MainMenuStrip = menu;
@@ -118,6 +119,13 @@ namespace FipArc
             ts.Items.Add(new ToolStripSeparator());
             AddTool(ts, Lang.S("tb.pack"), delegate { PackSelected(".fip"); });
             AddTool(ts, Lang.S("tb.extract"), delegate { ExtractTo(false); });
+
+            // 设置按钮（齿轮）：放最右边，随时改语言
+            ts.Items.Add(new ToolStripSeparator());
+            ToolStripButton btnSet = new ToolStripButton("⚙ " + Lang.S("tools.settings"));
+            btnSet.ToolTipText = Lang.S("set.language");
+            btnSet.Click += delegate { OpenSettings(); };
+            ts.Items.Add(btnSet);
 #if !SE
             ts.Items.Add(new ToolStripSeparator());
             AddTool(ts, "转为 FIP", delegate { ConvertToFip(); });
@@ -1033,6 +1041,20 @@ namespace FipArc
         }
 
         // ==================== 工具 ====================
+
+        /// <summary>打开设置窗口；语言改了就重启自己</summary>
+        void OpenSettings()
+        {
+            using (SettingsForm f = new SettingsForm())
+            {
+                f.ShowDialog(this);
+                if (f.LanguageChanged)
+                {
+                    Application.Restart();
+                    return;
+                }
+            }
+        }
 
         void ClearCache()
         {

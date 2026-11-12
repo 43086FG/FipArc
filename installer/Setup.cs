@@ -34,7 +34,7 @@ namespace FipArcSetup
         public const string MENU_NAME = "FipArc";
 #endif
         public const string APP_SUB = "压缩工具";
-        public const string VERSION = "1.1.1";
+        public const string VERSION = "1.2.0";
         public const string PUBLISHER = "43086FG";
 
         public static string DefaultDir
@@ -702,6 +702,25 @@ namespace FipArcSetup
             // 导致页面顶部的内容被横幅遮住。
             page1.BringToFront();
             page2.BringToFront();
+
+            // ---- 选了语言就立刻把安装程序自己的界面也换掉 ----
+            Action applyLang = delegate
+            {
+                Text = FipArc.Lang.S("setup.title");
+                l1.Text = FipArc.Lang.S("setup.loc");
+                l2.Text = FipArc.Lang.S("setup.desc");
+                l3.Text = FipArc.Lang.S("setup.path");
+                browse.Text = FipArc.Lang.S("setup.browse2");
+                desktop.Text = FipArc.Lang.S("setup.desktop2");
+                cancel.Text = FipArc.Lang.S("setup.cancel2");
+                next.Text = FipArc.Lang.S("setup.install2");
+            };
+            langBox.SelectedIndexChanged += delegate
+            {
+                FipArc.Lang.Current = langBox.SelectedIndex;
+                applyLang();
+            };
+            applyLang();
         }
 
         static Icon TryIcon()
