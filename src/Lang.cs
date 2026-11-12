@@ -189,18 +189,22 @@ namespace FipArc
         /// <summary>从注册表读回上次选择的语言；装过一次之后保持一致</summary>
         public static void Load()
         {
+            // 注册表里没有（首次运行 / 静默安装 / 刚卸载重装）就按系统语言来，
+            // 不要硬编码成某一种语言。
             try
             {
                 using (RegistryKey k = Registry.CurrentUser.OpenSubKey(REG_KEY))
                 {
-                    if (k == null) return;
-                    string code = k.GetValue(REG_VALUE) as string;
-                    if (string.IsNullOrEmpty(code)) return;
-                    for (int i = 0; i < Codes.Length; i++)
-                        if (string.Equals(Codes[i], code, StringComparison.OrdinalIgnoreCase)) { cur = i; return; }
+                    string code = (k == null) ? null : (k.GetValue(REG_VALUE) as string);
+                    if (!string.IsNullOrEmpty(code))
+                    {
+                        for (int i = 0; i < Codes.Length; i++)
+                            if (string.Equals(Codes[i], code, StringComparison.OrdinalIgnoreCase)) { cur = i; return; }
+                    }
                 }
             }
             catch { }
+            cur = DetectSystem();
         }
 
         /// <summary>按当前语言取文案；找不到就返回 key 本身，方便发现漏翻</summary>
