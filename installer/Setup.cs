@@ -226,11 +226,7 @@ namespace FipArcSetup
                 Path.Combine(dir, "7z.dll"),
                 Path.Combine(dir, "License-7zip.txt"),
                 Path.Combine(dir, "Uninstall.exe"),
-                Path.Combine(dir, "LAVFilters.zip"),
-                Path.Combine(dir, "audio.ico"),
-                Path.Combine(dir, "video.ico"),
-                Path.Combine(dir, "image.ico"),
-                Path.Combine(dir, "text.ico")
+                Path.Combine(dir, "LAVFilters.zip")
             };
 
             // 1) 我们装的文件（正在运行的卸载程序自己删不掉，留给批处理）
@@ -398,11 +394,6 @@ namespace FipArcSetup
             catch { }
 
             // 各文件类型自己的图标（音频/视频/图片/文本）
-            foreach (string ico in new string[] { "audio.ico", "video.ico", "image.ico", "text.ico" })
-            {
-                try { File.WriteAllBytes(Path.Combine(dir, ico), ReadResource(ico)); } catch { }
-            }
-
             // 内置解码器（LAV Filters）：让 DirectShow 能解 OGG/FLAC/H.264/HEVC 等
             try { File.WriteAllBytes(Path.Combine(dir, "LAVFilters.zip"), ReadResource("LAVFilters.zip")); } catch { }
 

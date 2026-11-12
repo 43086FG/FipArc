@@ -54,10 +54,6 @@ echo === [3/3] Building FipArcSetup.exe (installer) ===
   /resource:vendor\full\7z.dll,7z.dll ^
   /resource:vendor\full\License.txt,License-7zip.txt ^
   /resource:vendor\lav\lav.zip,LAVFilters.zip ^
-  /resource:assets\ico\audio.ico,audio.ico ^
-  /resource:assets\ico\video.ico,video.ico ^
-  /resource:assets\ico\image.ico,image.ico ^
-  /resource:assets\ico\text.ico,text.ico ^
   /resource:%OUT%\Uninstall.exe,Uninstall.exe ^
   /main:FipArcSetup.Program /out:%OUT%\FipArcSetup.exe installer\*.cs src\Shell.cs src\Lang.cs
 if errorlevel 1 (
