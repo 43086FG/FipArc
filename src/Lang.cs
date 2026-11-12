@@ -63,6 +63,22 @@ namespace FipArc
             A("menu.about",   "About", "このソフトについて", "정보", "Acerca de", "О программе", "關於", "关于");
             A("menu.language","Language", "言語", "언어", "Idioma", "Язык", "語言", "语言");
 
+            A("app.title",  "FipArc Archiver", "FipArc 圧縮ツール", "FipArc 압축 도구", "FipArc Compresor", "FipArc Архиватор", "FipArc 壓縮工具", "FipArc 压缩工具");
+
+            // ---------------- 主窗口：菜单项 ----------------
+            A("file.open",   "Open archive…", "書庫を開く…", "압축 파일 열기…", "Abrir archivo…", "Открыть архив…", "開啟壓縮檔…", "打开压缩包…");
+            A("pack.fip",    "Compress to FIP (native)…", "FIP に圧縮（独自形式）…", "FIP로 압축(전용 형식)…", "Comprimir a FIP (nativo)…", "Сжать в FIP (свой формат)…", "壓縮為 FIP（專有格式）…", "压缩为 FIP（本软件专有）…");
+            A("extract.to",  "Extract to…", "展開先…", "압축 풀 위치…", "Extraer en…", "Извлечь в…", "解壓縮至…", "解压到…");
+            A("ctx.desk",    "Extract selected to Desktop", "選択項目をデスクトップに展開", "선택 항목을 바탕 화면에 풀기", "Extraer selección al escritorio", "Извлечь выбранное на рабочий стол", "解壓縮選取項至桌面", "解压选中项到桌面");
+            A("ctx.to",      "Extract selected to…", "選択項目を展開…", "선택 항목 압축 풀기…", "Extraer selección en…", "Извлечь выбранное в…", "解壓縮選取項至…", "解压选中项到…");
+            A("st.items",    "{0} items", "{0} 項目", "{0}개 항목", "{0} elementos", "{0} элементов", "{0} 個項目", "{0} 项");
+            A("log.opened",  "Opened {0} ({1}) - {2} entries ({3} folders / {4} files), {5} unpacked",
+                           "{0}（{1}）を開きました。{2} 項目（{3} フォルダー / {4} ファイル）、展開後 {5}",
+                           "{0}({1}) 열림 - {2}개 항목({3}개 폴더 / {4}개 파일), 압축 해제 시 {5}",
+                           "Abierto {0} ({1}) - {2} entradas ({3} carpetas / {4} archivos), {5} sin comprimir",
+                           "Открыт {0} ({1}) - записей {2} ({3} папок / {4} файлов), распаковано {5}",
+                           "已開啟 {0}（{1}）- 共 {2} 項（{3} 個資料夾 / {4} 個檔案），解壓後 {5}",
+                           "已打开 {0}（{1}）- 共 {2} 项（{3} 个文件夹 / {4} 个文件），解压后 {5}");
             // ---------------- 主窗口：工具栏 ----------------
             A("tb.open",    "Open", "開く", "열기", "Abrir", "Открыть", "開啟", "打开");
             A("tb.pack",    "Compress", "圧縮", "압축", "Comprimir", "Сжать", "壓縮", "压缩");

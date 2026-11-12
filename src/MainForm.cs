@@ -29,7 +29,7 @@ namespace FipArc
 
         public MainForm(string[] initialFiles)
         {
-            Text = "FipArc 压缩工具";
+            Text = Lang.S("app.title");
             StartPosition = FormStartPosition.CenterScreen;
             ClientSize = new Size(940, 620);
             MinimumSize = new Size(700, 460);
@@ -40,13 +40,13 @@ namespace FipArc
             MenuStrip menu = new MenuStrip();
 
             ToolStripMenuItem mFile = new ToolStripMenuItem(Lang.S("menu.file"));
-            mFile.DropDownItems.Add("打开压缩包…", null, delegate { OpenArchiveDialog(); });
+            mFile.DropDownItems.Add(Lang.S("file.open"), null, delegate { OpenArchiveDialog(); });
             mFile.DropDownItems.Add(new ToolStripSeparator());
             mFile.DropDownItems.Add("退出", null, delegate { Close(); });
             menu.Items.Add(mFile);
 
             ToolStripMenuItem mComp = new ToolStripMenuItem(Lang.S("menu.pack"));
-            AddItem(mComp, "压缩为 FIP（本软件专有）…", delegate { PackSelected(".fip"); });
+            AddItem(mComp, Lang.S("pack.fip"), delegate { PackSelected(".fip"); });
             AddItem(mComp, "压缩为 ZIP…", delegate { PackSelected(".zip"); });
             AddItem(mComp, "压缩为 TAR…", delegate { PackSelected(".tar"); });
             AddItem(mComp, "压缩为 GZ（单文件）…", delegate { PackSelected(".gz"); });
@@ -56,7 +56,7 @@ namespace FipArc
             menu.Items.Add(mComp);
 
             ToolStripMenuItem mExt = new ToolStripMenuItem(Lang.S("menu.extract"));
-            AddItem(mExt, "解压到…", delegate { ExtractTo(false); });
+            AddItem(mExt, Lang.S("extract.to"), delegate { ExtractTo(false); });
             AddItem(mExt, "解压到当前文件夹", delegate { ExtractTo(true); });
             AddItem(mExt, "查看压缩包内容", delegate { OpenArchiveDialog(); });
             menu.Items.Add(mExt);
@@ -114,10 +114,10 @@ namespace FipArc
             ToolStrip ts = new ToolStrip();
             ts.GripStyle = ToolStripGripStyle.Hidden;
             ts.RenderMode = ToolStripRenderMode.System;
-            AddTool(ts, "打开压缩包", delegate { OpenArchiveDialog(); });
+            AddTool(ts, Lang.S("tb.open"), delegate { OpenArchiveDialog(); });
             ts.Items.Add(new ToolStripSeparator());
-            AddTool(ts, "压缩为 FIP", delegate { PackSelected(".fip"); });
-            AddTool(ts, "解压到…", delegate { ExtractTo(false); });
+            AddTool(ts, Lang.S("tb.pack"), delegate { PackSelected(".fip"); });
+            AddTool(ts, Lang.S("tb.extract"), delegate { ExtractTo(false); });
 #if !SE
             ts.Items.Add(new ToolStripSeparator());
             AddTool(ts, "转为 FIP", delegate { ConvertToFip(); });
@@ -157,10 +157,10 @@ namespace FipArc
             list.HideSelection = false;
             list.MultiSelect = false;
             list.GridLines = false;
-            list.Columns.Add("名称", 260, HorizontalAlignment.Left);
-            list.Columns.Add("原始大小", 100, HorizontalAlignment.Right);
-            list.Columns.Add("压缩后", 100, HorizontalAlignment.Right);
-            list.Columns.Add("类型", 130, HorizontalAlignment.Left);
+            list.Columns.Add(Lang.S("col.name"), 260, HorizontalAlignment.Left);
+            list.Columns.Add(Lang.S("col.size"), 100, HorizontalAlignment.Right);
+            list.Columns.Add(Lang.S("col.packed"), 100, HorizontalAlignment.Right);
+            list.Columns.Add(Lang.S("col.type"), 130, HorizontalAlignment.Left);
             list.SmallImageList = tree.ImageList;
             list.DoubleClick += delegate { OpenSelectedItem(); };
             list.ItemDrag += OnItemDrag;
@@ -168,8 +168,8 @@ namespace FipArc
 
             // 右键菜单：拖拽不好使时的可靠兜底
             ContextMenuStrip lvMenu = new ContextMenuStrip();
-            lvMenu.Items.Add("解压选中项到桌面", null, delegate { ExtractSelectedTo(true); });
-            lvMenu.Items.Add("解压选中项到…", null, delegate { ExtractSelectedTo(false); });
+            lvMenu.Items.Add(Lang.S("ctx.desk"), null, delegate { ExtractSelectedTo(true); });
+            lvMenu.Items.Add(Lang.S("ctx.to"), null, delegate { ExtractSelectedTo(false); });
             lvMenu.Items.Add(new ToolStripSeparator());
             lvMenu.Items.Add("用内置查看器打开", null, delegate { OpenSelectedItem(); });
             list.ContextMenuStrip = lvMenu;
@@ -235,8 +235,8 @@ namespace FipArc
                     PackPaths(files, ".fip");
             };
 
-            Log("FipArc 已启动。");
-            Log("提示：把文件或文件夹拖进窗口即可压缩；把压缩包拖进来即可查看内容。");
+            Log(Lang.S("log.welcome"));
+            Log(Lang.S("log.hint"));
             Log("");
 
             if (initialFiles != null && initialFiles.Length > 0)
@@ -337,13 +337,13 @@ namespace FipArc
                 if (dirCount < 0) dirCount = 0;
 
                 currentArchive = path;
-                Text = "FipArc 压缩工具 — " + Path.GetFileName(path) +
+                Text = Lang.S("app.title") + " — " + Path.GetFileName(path) +
                        "  [" + ArchiveKind.Describe(kind) + "]" +
                        (Archive.NeedsPassword(path) ? "  🔒" : "");
-                Log(string.Format("已打开 {0}（{1}），共 {2} 项（{3} 个文件夹 / {4} 个文件），解压后约 {5}",
+                Log(string.Format(Lang.S("log.opened"),
                     Path.GetFileName(path), ArchiveKind.Describe(kind), entries.Count,
                     dirCount, fileCount, FormatSize(total)));
-                SetStatus(string.Format("{0} 项", entries.Count));
+                SetStatus(string.Format(Lang.S("st.items"), entries.Count));
             }
             catch (Exception ex2)
             {
@@ -539,7 +539,7 @@ namespace FipArc
             }
 
             list.EndUpdate();
-            SetStatus(string.Format("[{0}] {1} 项", folder.Length == 0 ? "根目录" : folder, list.Items.Count));
+            SetStatus(string.Format("[{0}] {1}", folder.Length == 0 ? Lang.S("root") : folder, string.Format(Lang.S("st.items"), list.Items.Count)));
         }
 
         /// <summary>树节点反查文件夹路径</summary>
