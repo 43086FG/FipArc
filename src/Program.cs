@@ -367,17 +367,6 @@ namespace FipArc
                 return;
             }
 
-            // 图片查看器和文本编辑器都能自己读 FIP 容器，所以把【原始路径】给它们 ——
-            // 这样编辑 .fxt 后保存会写回原文件，而不是写回一个临时文件（改了也白改）。
-            // 只有媒体播放器必须用临时文件：MCI 需要真实文件路径。
-            if (Playable.IsImage(p))
-            {
-                ImageViewerForm f = new ImageViewerForm();
-                f.Show();
-                f.LoadFile(p);
-                Application.Run();
-                return;
-            }
             if (Playable.IsText(p))
             {
                 TextViewerForm f = new TextViewerForm();

@@ -180,7 +180,7 @@ namespace FipArc
             lvMenu.Items.Add(Lang.S("ctx.desk"), null, delegate { ExtractSelectedTo(true); });
             lvMenu.Items.Add(Lang.S("ctx.to"), null, delegate { ExtractSelectedTo(false); });
             lvMenu.Items.Add(new ToolStripSeparator());
-            lvMenu.Items.Add("用内置查看器打开", null, delegate { OpenSelectedItem(); });
+            lvMenu.Items.Add(Lang.S("ctx.builtin"), null, delegate { OpenSelectedItem(); });
             list.ContextMenuStrip = lvMenu;
             list.MouseDown += delegate(object s, MouseEventArgs me)
             {
@@ -304,7 +304,7 @@ namespace FipArc
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
-                dlg.Title = "打开压缩包";
+                dlg.Title = Lang.S("dlg.openarch");
                 dlg.Filter = "压缩包|*.fip;*.zip;*.tar;*.gz;*.tgz;*.tar.gz;*.7z;*.rar;*.iso;*.cab;*.xz;*.bz2;*.lzh;*.jar|所有文件|*.*";
                 if (dlg.ShowDialog(this) == DialogResult.OK) LoadArchive(dlg.FileName);
             }
@@ -315,7 +315,7 @@ namespace FipArc
             try
             {
                 Cursor = Cursors.WaitCursor;
-                SetStatus("正在读取 " + Path.GetFileName(path) + " …");
+                SetStatus(string.Format(Lang.S("log.reading"), Path.GetFileName(path)));
                 tree.BeginUpdate();
                 tree.Nodes.Clear();
 
@@ -366,10 +366,10 @@ namespace FipArc
                 MessageBox.Show(this,
                     "无法打开：" + ex2.Message + Environment.NewLine + Environment.NewLine +
                     (ArchiveKind.Detect(path) == ArchiveKind.SevenZip || ArchiveKind.Detect(path) == ArchiveKind.Rar
-                        ? "提示：7z / rar 需要安装 7-Zip 或 WinRAR 才能解压。"
+                        ? Lang.S("err.nowin7z")
                         : ""),
                     Lang.S("dlg.openfail"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Log("[错误] " + ex2.Message);
+                Log(Lang.S("log.err") + " " + ex2.Message);
             }
             finally { Cursor = Cursors.Default; }
         }
@@ -528,7 +528,7 @@ namespace FipArc
                 it.ImageIndex = 0;
                 it.SubItems.Add("");
                 it.SubItems.Add("");
-                it.SubItems.Add("文件夹 (" + count + ")");
+                it.SubItems.Add(string.Format(Lang.S("item.folder"), count));
                 it.Tag = s;                    // 文件夹用 string 标记
                 list.Items.Add(it);
             }
@@ -548,7 +548,7 @@ namespace FipArc
                     it.ImageIndex = 1;
                     it.SubItems.Add(e.Size >= 0 ? FormatSize(e.Size) : "—");
                     it.SubItems.Add(e.PackedSize > 0 ? FormatSize(e.PackedSize) : "—");
-                    it.SubItems.Add(e.IsDir ? "文件夹" : (Path.GetExtension(leaf).Length > 0 ? Path.GetExtension(leaf).Substring(1).ToUpperInvariant() + " 文件" : "文件"));
+                    it.SubItems.Add(e.IsDir ? Lang.S("item.folder2") : (Path.GetExtension(leaf).Length > 0 ? Path.GetExtension(leaf).Substring(1).ToUpperInvariant() + " 文件" : "文件"));
                     it.Tag = e;
                     list.Items.Add(it);
                 }
@@ -583,7 +583,7 @@ namespace FipArc
             selectedEntry = tag as EntryInfo;
             if (selectedEntry == null)
             {
-                SetStatus("文件夹：" + tag);
+                SetStatus(string.Format(Lang.S("status.folder"), tag));
                 return;
             }
             SetStatus(string.Format("{0}    原始 {1}    压缩后 {2}",
@@ -631,7 +631,7 @@ namespace FipArc
                 File.Copy(src, dest, true);
                 OpenWithBuiltin(dest);
             }
-            catch (Exception ex2) { Log("[错误] " + ex2.Message); }
+            catch (Exception ex2) { Log(Lang.S("log.err") + " " + ex2.Message); }
         }
 
         // ==================== 从列表里拖出文件 ====================
@@ -722,13 +722,12 @@ namespace FipArc
             catch (Exception ex3) { Log("[拖出] DoDragDrop 异常: " + ex3.Message); }
             finally { AllowDrop = prevDrop; draggingOut = false; }
             Log("[拖出] 松手结果: " + res + (res == DragDropEffects.None
-                ? "（没有落在能接收的地方：请在资源管理器/桌面上松手）" : "（已放到目标位置）"));
+                ? Lang.S("log.dragnone") : Lang.S("log.dragok")));
         }
 
         public void OpenWithBuiltin(string path)
         {
-            if (Playable.IsImage(path)) { ImageViewerForm f = new ImageViewerForm(); f.Show(this); f.LoadFile(path); }
-            else if (Playable.IsText(path)) { TextViewerForm f = new TextViewerForm(); f.Show(this); f.LoadFile(path); }
+            if (Playable.IsText(path)) { TextViewerForm f = new TextViewerForm(); f.Show(this); f.LoadFile(path); }
             // 音视频不再内置播放，交给系统默认播放器
             else Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
         }
@@ -738,7 +737,7 @@ namespace FipArc
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
-                dlg.Title = "选择要压缩的文件（可多选）";
+                dlg.Title = Lang.S("dlg.picksrc");
                 dlg.Multiselect = true;
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 PackPaths(dlg.FileNames, ext);
@@ -814,10 +813,10 @@ namespace FipArc
 
         void AddToArchive()
         {
-            if (currentArchive == null) { Log("[提示] 请先打开一个压缩包"); return; }
+            if (currentArchive == null) { Log(Lang.S("log.tip") + " " + Lang.S("dlg.openarch")); return; }
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
-                dlg.Title = "要添加的文件";
+                dlg.Title = Lang.S("dlg.addfiles");
                 dlg.Multiselect = true;
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 try
@@ -838,7 +837,7 @@ namespace FipArc
                     else throw new NotSupportedException("这个格式暂不支持追加");
                     File.WriteAllBytes(currentArchive, data);
                     LoadArchive(currentArchive);
-                    Log("已追加 " + dlg.FileNames.Length + " 个文件");
+                    Log(Lang.S("log.done") + " +" + dlg.FileNames.Length);
                     try { Directory.Delete(tmp, true); } catch { }
                 }
                 catch (Exception ex)
@@ -854,7 +853,7 @@ namespace FipArc
         {
             if (currentArchive == null || list.SelectedItems.Count == 0)
             {
-                Log("[提示] 请先在右边列表里选中一个文件或文件夹");
+                Log(Lang.S("log.tip") + " " + Lang.S("col.name"));
                 return;
             }
             object tag = list.SelectedItems[0].Tag;
@@ -889,7 +888,7 @@ namespace FipArc
                     if (ent != null) ex.ExtractOne(ent.Name, destRoot);
                     else ex.ExtractFolder(folder, destRoot);
                 }, currentArchive);
-                if (!ok) { Log("[取消] 未解出"); return; }
+                if (!ok) { Log(Lang.S("log.cancel")); return; }
 
                 if (Archive.LastErrors.Count > 0) { ShowExtractErrors(); return; }
 
@@ -989,7 +988,7 @@ namespace FipArc
             catch (Exception ex2)
             {
                 MessageBox.Show(this, ex2.Message, "解压失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Log("[错误] " + ex2.Message);
+                Log(Lang.S("log.err") + " " + ex2.Message);
             }
             finally { Cursor = Cursors.Default; }
         }

@@ -1,8 +1,8 @@
 # FipArc
 
-**A Windows archiver with its own format `.fip`, an Explorer-style archive browser, and a built-in image viewer / text editor.**
+**A Windows archiver with its own format `.fip`, an Explorer-style archive browser, and a built-in text editor.**
 
-> Windows 压缩工具，自带 `.fip` 专有格式、资源管理器式压缩包浏览、内置看图 / 文本编辑器。
+> Windows 压缩工具，自带 `.fip` 专有格式、资源管理器式压缩包浏览、内置文本编辑器。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Platform](https://img.shields.io/badge/platform-Windows%207%20%7C%208%20%7C%2010%20%7C%2011-lightgrey)
@@ -18,16 +18,16 @@
   Encrypted archives ask for the password first.
 - **Its own format `.fip`** — AES-encrypted headers and payload.
 - **Compress to** `.fip` `.zip` `.tar` `.gz` `.tar.gz`, plus 7-Zip / RAR support through a bundled 7-Zip engine.
-- **Image viewer** and **text editor** with zoom, rotate, save — for files inside archives too.
+- **Text editor** — open and edit text files inside archives directly.
 - **Per-user install** to `%APPDATA%\FipArc` — **no administrator rights needed**.
 - **7 languages** — English, 日本語, 한국어, Español, Русский, 繁體中文, 简体中文.
   Chosen at install time, changeable in **Tools → Language**.
 
 ## Screenshots
 
-| Archive browser / 压缩包浏览 | Image viewer / 图片查看 |
+| Archive browser / 压缩包浏览 | Text editor / 文本编辑 |
 |---|---|
-| ![Archive browser](docs/screenshot-browser.png) | ![Image viewer](docs/screenshot-viewer.png) |
+| ![Archive browser](docs/screenshot-browser.png) | ![Text editor](docs/screenshot-viewer.png) |
 
 Folder tree on the left, file details on the right — browse `.zip` `.7z` `.rar` `.fip`
 without extracting, then drag anything out into Explorer.
@@ -141,7 +141,6 @@ FipArc/
 │  ├─ FipCore.cs            .fip container format
 │  ├─ ZipCrypto.cs          ZipCrypto encryption
 │  ├─ SevenZip.cs           Wrapper around the bundled 7z.exe
-│  ├─ ImageViewerForm.cs    Image viewer
 │  ├─ TextViewerForm.cs     Text editor
 │  ├─ Playable.cs           File-kind detection
 │  ├─ Shell.cs              Registry: associations, context menus, icons

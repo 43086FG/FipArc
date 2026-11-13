@@ -118,6 +118,33 @@ namespace FipArc
             A("ctx.tar",     "TAR format (.tar)", "TAR 形式（.tar）", "TAR 형식(.tar)", "Formato TAR (.tar)", "Формат TAR (.tar)", "TAR 格式（.tar）", "TAR 格式（.tar）");
             A("ctx.tgz",     "TAR.GZ format (.tar.gz)", "TAR.GZ 形式（.tar.gz）", "TAR.GZ 형식(.tar.gz)", "Formato TAR.GZ (.tar.gz)", "Формат TAR.GZ (.tar.gz)", "TAR.GZ 格式（.tar.gz）", "TAR.GZ 格式（.tar.gz）");
 
+            // ---------------- 主窗口：标题 / 过滤器 / 日志前缀 ----------------
+            A("dlg.openarch",  "Open archive", "書庫を開く", "압축 파일 열기", "Abrir archivo", "Открыть архив", "開啟壓縮檔", "打开压缩包");
+            A("dlg.picksrc",   "Choose files to compress (multiple allowed)", "圧縮するファイルを選択（複数可）", "압축할 파일 선택(여러 개 가능)", "Elige archivos para comprimir (varios)", "Выберите файлы для сжатия (можно несколько)", "選擇要壓縮的檔案（可多選）", "选择要压缩的文件（可多选）");
+            A("dlg.addfiles",  "Files to add", "追加するファイル", "추가할 파일", "Archivos a agregar", "Файлы для добавления", "要新增的檔案", "要添加的文件");
+            A("filter.arch",   "Archives", "書庫", "압축 파일", "Archivos comprimidos", "Архивы", "壓縮檔", "压缩包");
+            A("filter.all",    "All files", "すべてのファイル", "모든 파일", "Todos los archivos", "Все файлы", "所有檔案", "所有文件");
+            A("log.done",      "Done", "完了", "완료", "Hecho", "Готово", "完成", "完成");
+            A("log.tip",       "[Info]", "[情報]", "[정보]", "[Info]", "[Инфо]", "[提示]", "[提示]");
+            A("log.err",       "[Error]", "[エラー]", "[오류]", "[Error]", "[Ошибка]", "[錯誤]", "[错误]");
+            A("log.cancel",    "[Cancelled]", "[中止]", "[취소]", "[Cancelado]", "[Отменено]", "[取消]", "[取消]");
+            A("log.reading",   "Reading {0}…", "{0} を読み込み中…", "{0} 읽는 중…", "Leyendo {0}…", "Чтение {0}…", "正在讀取 {0}…", "正在读取 {0}…");
+            A("log.dragstart", "[Drag-out] start: {0}", "[ドラッグ] 開始: {0}", "[끌기] 시작: {0}", "[Arrastrar] inicio: {0}", "[Перетаскивание] начало: {0}", "[拖出] 開始: {0}", "[拖出] 开始: {0}");
+            A("log.dragdone",  "[Drag-out] dropped: {0}", "[ドラッグ] 完了: {0}", "[끌기] 완료: {0}", "[Arrastrar] soltado: {0}", "[Перетаскивание] отпущено: {0}", "[拖出] 完成: {0}", "[拖出] 完成: {0}");
+            A("log.dragnone",  "nothing accepted the drop — release over Explorer or the desktop",
+                               "受け取り先がありません。エクスプローラーかデスクトップで離してください。",
+                               "받는 곳이 없습니다. 탐색기나 바탕 화면에서 놓으세요.",
+                               "nada aceptó el arrastre — suelta sobre el Explorador o el escritorio",
+                               "ничего не приняло — отпустите над Проводником или рабочим столом",
+                               "沒有可接收的位置 —— 請在檔案總管或桌面上放手",
+                               "没有可接收的位置 —— 请在资源管理器或桌面上松手");
+            A("log.dragok",    "dropped on the target", "コピーしました", "복사되었습니다", "soltado en el destino", "скопировано в цель", "已放到目標位置", "已放到目标位置");
+            A("status.folder", "Folder: {0}", "フォルダー：{0}", "폴더: {0}", "Carpeta: {0}", "Папка: {0}", "資料夾：{0}", "文件夹：{0}");
+            A("status.detail", "{0}    size {1}    packed {2}", "{0}    サイズ {1}    圧縮後 {2}", "{0}    크기 {1}    압축 후 {2}", "{0}    tamaño {1}    comprimido {2}", "{0}    размер {1}    сжато {2}", "{0}    大小 {1}    壓縮後 {2}", "{0}    原始 {1}    压缩后 {2}");
+            A("item.folder",   "Folder ({0})", "フォルダー ({0})", "폴더 ({0})", "Carpeta ({0})", "Папка ({0})", "資料夾 ({0})", "文件夹 ({0})");
+            A("item.folder2",  "Folder", "フォルダー", "폴더", "Carpeta", "Папка", "資料夾", "文件夹");
+            A("ctx.builtin",   "Open with built-in viewer", "内蔵ビューアーで開く", "내장 뷰어로 열기", "Abrir con el visor integrado", "Открыть во встроенной программе", "用內建檢視器開啟", "用内置查看器打开");
+            A("err.nowin7z",   "7z / rar need 7-Zip or WinRAR installed to extract.", "7z / rar の展開には 7-Zip または WinRAR が必要です。", "7z / rar 압축을 풀려면 7-Zip 또는 WinRAR이 필요합니다.", "7z / rar necesitan 7-Zip o WinRAR para extraerse.", "Для 7z / rar нужен 7-Zip или WinRAR.", "7z / rar 需要安裝 7-Zip 或 WinRAR 才能解壓縮。", "7z / rar 需要安装 7-Zip 或 WinRAR 才能解压。");
             // ---------------- 对话框 ----------------
             A("pw.label",    "Password:", "パスワード：", "암호:", "Contraseña:", "Пароль:", "密碼：", "密码：");
             A("pw.show",     "Show password", "パスワードを表示", "암호 표시", "Mostrar contraseña", "Показать пароль", "顯示密碼", "显示密码");
