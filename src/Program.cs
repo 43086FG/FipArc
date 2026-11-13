@@ -91,7 +91,12 @@ namespace FipArc
                     if (pwd == null) return false;
                 }
                 try { act(pwd); return true; }
+                // WrongPassword = 密码错；PasswordRequired = 一开始没检测出来是加密的
+                // （rar 加密文件名、某些 zip 变体）。两种都应该重新问密码，
+                // 以前只捕了前一种，后一种会直接抛出去，用户看到的就是"解压失败"。
                 catch (WrongPasswordException) { need = true; continue; }
+                catch (PasswordRequiredException) { need = true; continue; }
+                catch (Exception ex) { throw new Exception(Lang.S("dlg.extractfail") + ": " + ex.Message, ex); }
             }
             MessageBox.Show(Lang.S("err.pw3"), Lang.S("err.title"),
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -215,13 +220,18 @@ namespace FipArc
                     string path = p;
                     string dest = Convert2.UniquePath(
                         Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path)));
-                    bool done = UnlockAndRun(path, delegate(string pw)
+                    bool done = false;
+                    try
+                    {
+                    done = UnlockAndRun(path, delegate(string pw)
                     {
                         Directory.CreateDirectory(dest);
                         IExtractor ex = Archive.Open(path);
                         ex.SetPassword(pw);
                         ex.ExtractAll(dest, null);
                     });
+                    }
+                    catch (Exception exAll) { err = exAll.Message; done = false; }
                     if (done)
                     {
                         lastDir = dest;
@@ -323,9 +333,14 @@ namespace FipArc
                         err = "不是可还原的 FIP 文件类型: " + Path.GetFileName(path);
                         continue;
                     }
-                    bool done = UnlockAndRun(path, delegate(string pw) { last = Convert2.FromFip(path, pw); });
+                    bool done = false;
+                    try
+                    {
+                    done = UnlockAndRun(path, delegate(string pw) { last = Convert2.FromFip(path, pw); });
                     if (done) ok++;
                     else err = Lang.S("prog.cancelpw");
+                    }
+                    catch (Exception exAll) { err = exAll.Message; done = false; }
                 }
                 busy.Close();
             }
