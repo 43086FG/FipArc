@@ -360,7 +360,7 @@ namespace FipArc
                     (ArchiveKind.Detect(path) == ArchiveKind.SevenZip || ArchiveKind.Detect(path) == ArchiveKind.Rar
                         ? "提示：7z / rar 需要安装 7-Zip 或 WinRAR 才能解压。"
                         : ""),
-                    "打开失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Lang.S("dlg.openfail"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Log("[错误] " + ex2.Message);
             }
             finally { Cursor = Cursors.Default; }
@@ -688,7 +688,7 @@ namespace FipArc
             }
             catch (Exception ex2)
             {
-                Log("[错误] 拖出失败: " + ex2.Message);
+                Log(Lang.S("dlg.dragfail") + ": " + ex2.Message);
                 MessageBox.Show(this, ex2.Message, "无法拖出", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -749,7 +749,7 @@ namespace FipArc
                 string outPath = Path.Combine(baseDir, nameBase + ext);
                 if (paths.Length > 1) outPath = Path.Combine(baseDir, Path.GetFileName(baseDir) + ext);
 
-                SetStatus("正在压缩…");
+                SetStatus(Lang.S("st.packing"));
                 Application.DoEvents();
 
                 // .fip / .zip / .7z 问密码；f 格式转换不问
@@ -796,7 +796,7 @@ namespace FipArc
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "压缩失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, ex.Message, Lang.S("dlg.packfail"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Log("[错误] " + ex.Message);
             }
             finally { Cursor = Cursors.Default; }
@@ -833,7 +833,7 @@ namespace FipArc
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this, ex.Message, "追加失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(this, ex.Message, Lang.S("dlg.addfail"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
@@ -858,7 +858,7 @@ namespace FipArc
             {
                 using (FolderBrowserDialog fb = new FolderBrowserDialog())
                 {
-                    fb.Description = "解压到哪个文件夹？";
+                    fb.Description = Lang.S("dlg.whichfolder");
                     fb.SelectedPath = Path.GetDirectoryName(Application.ExecutablePath);
                     if (fb.ShowDialog(this) != DialogResult.OK) return;
                     destRoot = fb.SelectedPath;
@@ -889,8 +889,8 @@ namespace FipArc
             }
             catch (Exception ex2)
             {
-                Log("[错误] 解出失败: " + ex2.Message);
-                MessageBox.Show(this, ex2.Message, "解出失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Log(Lang.S("dlg.extractfail") + ": " + ex2.Message);
+                MessageBox.Show(this, ex2.Message, Lang.S("dlg.extractfail"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally { Cursor = prev; }
         }

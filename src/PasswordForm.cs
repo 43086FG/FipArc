@@ -34,7 +34,7 @@ namespace FipArc
             Controls.Add(l1);
 
             Label l2 = new Label();
-            l2.Text = "密码：";
+            l2.Text = Lang.S("pw.label");
             l2.AutoSize = true;
             l2.Location = new Point(18, 64);
             Controls.Add(l2);
@@ -46,7 +46,7 @@ namespace FipArc
             Controls.Add(box);
 
             show = new CheckBox();
-            show.Text = "显示密码";
+            show.Text = Lang.S("pw.show");
             show.AutoSize = true;
             show.Location = new Point(70, 93);
             show.CheckedChanged += delegate { box.UseSystemPasswordChar = !show.Checked; };
@@ -61,7 +61,7 @@ namespace FipArc
             {
                 if (!allowEmpty && box.Text.Length == 0)
                 {
-                    MessageBox.Show(this, "请输入密码。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(this, Lang.S("pw.need"), Lang.S("pw.hint"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     DialogResult = DialogResult.None;
                     return;
                 }
@@ -70,7 +70,7 @@ namespace FipArc
             Controls.Add(ok);
 
             Button cancel = new Button();
-            cancel.Text = "取消";
+            cancel.Text = Lang.S("cancel");
             cancel.Location = new Point(324, 140);
             cancel.Size = new Size(80, 30);
             cancel.DialogResult = DialogResult.Cancel;
@@ -83,8 +83,8 @@ namespace FipArc
         /// <summary>设置新密码；返回 null 表示取消，空字符串表示不设密码</summary>
         public static string AskNew(IWin32Window owner, string what)
         {
-            using (PasswordForm f = new PasswordForm("设置密码",
-                "为「" + what + "」设置打开密码。\n留空表示不加密（任何人都能打开）。", "确定", true))
+            using (PasswordForm f = new PasswordForm(Lang.S("pw.tset"),
+                string.Format(Lang.S("pw.tipset"), what), Lang.S("ok"), true))
             {
                 f.ShowInTaskbar = true;
                 f.Activate();
@@ -97,10 +97,10 @@ namespace FipArc
         /// <summary>输入已有密码；返回 null 表示取消</summary>
         public static string AskOpen(IWin32Window owner, string what, string extra)
         {
-            using (PasswordForm f = new PasswordForm("需要密码",
-                "「" + what + "」是旧版本设置过密码的文件，请输入密码才能打开。" +
-                "（新版本创建的文件不再需要密码）" +
-                (string.IsNullOrEmpty(extra) ? "" : "\n" + extra), "打开", false))
+            using (PasswordForm f = new PasswordForm(Lang.S("pw.tneedtitle"),
+                Lang.S("pw.tneed") + Environment.NewLine +
+                Lang.S("pw.tneed2") +
+                (string.IsNullOrEmpty(extra) ? "" : Environment.NewLine + extra), Lang.S("pw.open"), false))
             {
                 f.ShowInTaskbar = true;
                 f.Activate();

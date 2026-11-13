@@ -26,7 +26,7 @@ namespace FipArc
 
         public string Describe()
         {
-            return string.Format("{0} 个文件 / {1} 个目录，约 {2}", FileCount, DirCount, Cache.Size(Bytes));
+            return string.Format(Lang.S("cache.summary"), FileCount, DirCount, Cache.Size(Bytes));
         }
     }
 

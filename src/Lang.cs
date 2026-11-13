@@ -117,6 +117,45 @@ namespace FipArc
             A("ctx.tar",     "TAR format (.tar)", "TAR 形式（.tar）", "TAR 형식(.tar)", "Formato TAR (.tar)", "Формат TAR (.tar)", "TAR 格式（.tar）", "TAR 格式（.tar）");
             A("ctx.tgz",     "TAR.GZ format (.tar.gz)", "TAR.GZ 形式（.tar.gz）", "TAR.GZ 형식(.tar.gz)", "Formato TAR.GZ (.tar.gz)", "Формат TAR.GZ (.tar.gz)", "TAR.GZ 格式（.tar.gz）", "TAR.GZ 格式（.tar.gz）");
 
+            // ---------------- 对话框 ----------------
+            A("pw.label",    "Password:", "パスワード：", "암호:", "Contraseña:", "Пароль:", "密碼：", "密码：");
+            A("pw.show",     "Show password", "パスワードを表示", "암호 표시", "Mostrar contraseña", "Показать пароль", "顯示密碼", "显示密码");
+            A("pw.need",     "Please enter the password.", "パスワードを入力してください。", "암호를 입력하세요.", "Introduce la contraseña.", "Введите пароль.", "請輸入密碼。", "请输入密码。");
+            A("pw.hint",     "Hint", "ヒント", "힌트", "Aviso", "Подсказка", "提示", "提示");
+            A("pw.tset",     "Set password", "パスワード設定", "암호 설정", "Establecer contraseña", "Задать пароль", "設定密碼", "设置密码");
+            A("pw.tipset",   "Set an open password for {0}. Leave empty for no encryption (anyone can open it).",
+                             "{0} に開くためのパスワードを設定します。空欄なら暗号化しません（誰でも開けます）。",
+                             "{0}의 열기 암호를 설정합니다. 비우면 암호화하지 않습니다(누구나 열 수 있음).",
+                             "Establece una contraseña para abrir {0}. Déjalo vacío para no cifrar (cualquiera podrá abrirlo).",
+                             "Задайте пароль для открытия {0}. Пусто — без шифрования (откроет любой).",
+                             "為 {0} 設定開啟密碼。留空表示不加密（任何人都能開啟）。",
+                             "为 {0} 设置打开密码。留空表示不加密（任何人都能打开）。");
+            A("pw.tneed",    "This file was password-protected by an older version.",
+                             "このファイルは旧バージョンでパスワードが設定されています。",
+                             "이 파일은 이전 버전에서 암호가 설정되었습니다.",
+                             "Este archivo fue protegido por una versión anterior.",
+                             "Этот файл защищён паролем в старой версии.",
+                             "此檔案是舊版本設定過密碼的檔案。",
+                             "此文件是旧版本设置过密码的文件。");
+            A("pw.tneed2",   "Files created by this version no longer need one.",
+                             "このバージョンで作成したファイルには不要です。",
+                             "이 버전에서 만든 파일에는 필요하지 않습니다.",
+                             "Los archivos de esta versión ya no lo necesitan.",
+                             "Файлы этой версии в нём не нуждаются.",
+                             "新版本建立的檔案不再需要密碼。",
+                             "新版本创建的文件不再需要密码。");
+            A("pw.tneedtitle","Password required", "パスワードが必要", "암호 필요", "Se necesita contraseña", "Требуется пароль", "需要密碼", "需要密码");
+            A("pw.open",     "Open", "開く", "열기", "Abrir", "Открыть", "開啟", "打开");
+            A("cache.summary","{0} files / {1} folders, about {2}", "{0} ファイル / {1} フォルダー、約 {2}", "{0}개 파일 / {1}개 폴더, 약 {2}", "{0} archivos / {1} carpetas, unos {2}", "{0} файлов / {1} папок, около {2}", "{0} 個檔案 / {1} 個資料夾，約 {2}", "{0} 个文件 / {1} 个目录，约 {2}");
+            A("st.packing",  "Compressing…", "圧縮中…", "압축 중…", "Comprimiendo…", "Сжатие…", "正在壓縮…", "正在压缩…");
+            A("st.extracting","Extracting…", "展開中…", "압축 푸는 중…", "Extrayendo…", "Извлечение…", "正在解壓縮…", "正在解压…");
+            A("dlg.openfail",   "Could not open", "開けません", "열 수 없음", "No se pudo abrir", "Не удалось открыть", "開啟失敗", "打开失败");
+            A("dlg.packfail",   "Compression failed", "圧縮に失敗", "압축 실패", "Error al comprimir", "Ошибка сжатия", "壓縮失敗", "压缩失败");
+            A("dlg.addfail",    "Could not add", "追加できません", "추가 실패", "No se pudo agregar", "Не удалось добавить", "新增失敗", "追加失败");
+            A("dlg.extractfail","Extraction failed", "展開に失敗", "압축 풀기 실패", "Error al extraer", "Ошибка извлечения", "解壓縮失敗", "解出失败");
+            A("dlg.whichfolder","Where to extract?", "展開先を選択", "어디에 풀까요?", "¿Dónde extraer?", "Куда извлечь?", "解壓縮到哪個資料夾？", "解压到哪个文件夹？");
+            A("dlg.dragfail",   "Drag-out failed", "ドラッグ失敗", "끌어내기 실패", "Error al arrastrar", "Ошибка перетаскивания", "拖曳失敗", "拖出失败");
+            A("dlg.done",       "Done", "完了", "완료", "Hecho", "Готово", "完成", "完成");
             // ---------------- 主窗口：工具栏 ----------------
             A("tb.open",    "Open", "開く", "열기", "Abrir", "Открыть", "開啟", "打开");
             A("tb.pack",    "Compress", "圧縮", "압축", "Comprimir", "Сжать", "壓縮", "压缩");
