@@ -674,6 +674,48 @@ namespace FipArc
             // 解除扩展名绑定
             foreach (string ext in OwnExts) Del(@"Software\Classes\" + ext);
 
+
+            // 兜底：把 shell 菜单树里所有 FipArc* 前缀的键全部扫掉。
+            // 光靠上面按名字删会漏 —— 以后新增了菜单项忘记加进清单，
+            // 卸载后就会留一条幽灵菜单在资源管理器里。
+            foreach (string root in new string[] {
+                @"Software\Classes\*\shell",
+                @"Software\Classes\Directory\shell",
+                @"Software\Classes\Directory\Background\shell",
+                @"Software\Classes\Drive\shell",
+                @"Software\Classes\Folder\shell" })
+            {
+                try
+                {
+                    using (RegistryKey rk = Registry.CurrentUser.OpenSubKey(root, true))
+                    {
+                        if (rk == null) continue;
+                        foreach (string name in rk.GetSubKeyNames())
+                            if (name.StartsWith("FipArc", StringComparison.OrdinalIgnoreCase))
+                                try { rk.DeleteSubKeyTree(name, false); } catch { }
+                    }
+                }
+                catch { }
+            }
+            try
+            {
+                using (RegistryKey sfa = Registry.CurrentUser.OpenSubKey(@"Software\Classes\SystemFileAssociations", true))
+                {
+                    if (sfa != null)
+                        foreach (string ext in sfa.GetSubKeyNames())
+                        {
+                            using (RegistryKey sh = sfa.OpenSubKey(ext + @"\shell", true))
+                            {
+                                if (sh == null) continue;
+                                foreach (string name in sh.GetSubKeyNames())
+                                    if (name.StartsWith("FipArc", StringComparison.OrdinalIgnoreCase))
+                                        try { sh.DeleteSubKeyTree(name, false); } catch { }
+                            }
+                        }
+                }
+            }
+            catch { }
+
             RestoreIcons();
 
             // 卸载登记：只有在卸载的就是登记的那个目录时才删，
