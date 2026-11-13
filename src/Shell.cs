@@ -107,12 +107,12 @@ namespace FipArc
         }
 
         static readonly PackFmt[] PackFormats = new PackFmt[] {
-            new PackFmt("fip", ".fip",    "FIP 格式 (.fip · 可设密码)"),
-            new PackFmt("zip", ".zip",    "ZIP 格式 (.zip · 可设密码)"),
-            new PackFmt("7z",  ".7z",     "7Z 格式 (.7z · 可设密码)"),
+            new PackFmt("fip", ".fip",    "ctx.fip"),
+            new PackFmt("zip", ".zip",    "ctx.zip"),
+            new PackFmt("7z",  ".7z",     "ctx.7z"),
             new PackFmt("tar", ".tar",    "TAR 格式 (.tar)"),
             new PackFmt("tgz", ".tar.gz", "TAR.GZ 格式 (.tar.gz)"),
-            new PackFmt("gz",  ".gz",     "GZ 格式 (.gz，仅单文件)"),
+            new PackFmt("gz",  ".gz",     "ctx.gz"),
         };
 
         /// <summary>某个压缩格式对应的扩展名</summary>
@@ -131,8 +131,8 @@ namespace FipArc
         public static void RegisterContextMenu(string exePath, string iconPath)
         {
             // ---- 压缩：级联菜单（选中文件 / 选中文件夹）----
-            CascadePack(@"Software\Classes\*\shell\FipArcPack", "压缩为(&C)", iconPath, exePath);
-            CascadePack(@"Software\Classes\Directory\shell\FipArcPack", "压缩为(&C)", iconPath, exePath);
+            CascadePack(@"Software\Classes\*\shell\FipArcPack", Lang.S("ctx.pack"), iconPath, exePath);
+            CascadePack(@"Software\Classes\Directory\shell\FipArcPack", Lang.S("ctx.pack"), iconPath, exePath);
             // 注意：不注册 Directory\Background —— 那样在文件夹空白处也会出现菜单，
             //       那时并没有选中任何文件。
 
@@ -158,7 +158,7 @@ namespace FipArc
             foreach (string ext in ArchiveExts)
             {
                 string baseKey = SfaKey(ext);
-                RegMenu(baseKey + @"\shell\FipArcExtract", "解压到当前文件夹(&E)",
+                RegMenu(baseKey + @"\shell\FipArcExtract", Lang.S("ctx.extract"),
                         iconPath, Q(exePath) + " /extract \"%1\"");
                 RegMenu(baseKey + @"\shell\FipArcOpen", "用 FipArc 打开(&O)",
                         iconPath, Q(exePath) + " /open \"%1\"");
@@ -199,7 +199,7 @@ namespace FipArc
                         using (RegistryKey c = shell.CreateSubKey(f.Key))
                         {
                             if (c == null) continue;
-                            c.SetValue("MUIVerb", f.Label);
+                            c.SetValue("MUIVerb", Lang.S(f.Label));
                             using (RegistryKey cmd = c.CreateSubKey("command"))
                                 if (cmd != null)
                                     cmd.SetValue("", Q(exePath) + " /pack " + f.Key + " \"%1\"");

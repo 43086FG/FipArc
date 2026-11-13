@@ -210,7 +210,7 @@ namespace FipArc
 
             // ---------------- 状态栏 ----------------
             statusBar = new StatusStrip();
-            statusText = new ToolStripStatusLabel("就绪");
+            statusText = new ToolStripStatusLabel(Lang.S("st.ready"));
             statusBar.Items.Add(statusText);
             Controls.Add(statusBar);
 
@@ -791,7 +791,7 @@ namespace FipArc
                 outPath = Convert2.UniquePath(outPath);
                 File.WriteAllBytes(outPath, data);
                 Log(string.Format("已创建 {0}  ({1})", Path.GetFileName(outPath), FormatSize(data.Length)));
-                SetStatus("完成");
+                SetStatus(Lang.S("setup.finished"));
                 LoadArchive(outPath);
             }
             catch (Exception ex)

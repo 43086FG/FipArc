@@ -15,6 +15,10 @@ namespace FipArc
         static void Main(string[] args)
         {
             Lang.Load();                      // 上次选的语言
+
+            // 右键菜单的文案是在注册表里写死的，换了语言必须重写一遍，
+            // 否则菜单会一直停留在安装时那个语言。
+            try { Shell.RegisterContextMenu(Application.ExecutablePath, Path.Combine(Application.StartupPath, "app.ico")); } catch { }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

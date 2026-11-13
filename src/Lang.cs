@@ -107,6 +107,16 @@ namespace FipArc
                              "將重新啟動以套用新語言。",
                              "将重启程序以应用新语言。");
             A("set.close",   "Close", "閉じる", "닫기", "Cerrar", "Закрыть", "關閉", "关闭");
+            // ---------------- 右键菜单 ----------------
+            A("ctx.pack",    "Compress to(&C)", "圧縮(&C)", "압축(&C)", "Comprimir(&C)", "Сжать(&C)", "壓縮為(&C)", "压缩为(&C)");
+            A("ctx.extract", "Extract here(&E)", "ここに展開(&E)", "여기에 풀기(&E)", "Extraer aquí(&E)", "Извлечь сюда(&E)", "解壓縮到此處(&E)", "解压到当前文件夹(&E)");
+            A("ctx.fip",     "FIP format (.fip, password ok)", "FIP 形式（.fip・パスワード可）", "FIP 형식(.fip, 암호 가능)", "Formato FIP (.fip, con contraseña)", "Формат FIP (.fip, с паролем)", "FIP 格式（.fip・可設密碼）", "FIP 格式（.fip・可设密码）");
+            A("ctx.zip",     "ZIP format (.zip, password ok)", "ZIP 形式（.zip・パスワード可）", "ZIP 형식(.zip, 암호 가능)", "Formato ZIP (.zip, con contraseña)", "Формат ZIP (.zip, с паролем)", "ZIP 格式（.zip・可設密碼）", "ZIP 格式（.zip・可设密码）");
+            A("ctx.7z",      "7Z format (.7z, password ok)", "7Z 形式（.7z・パスワード可）", "7Z 형식(.7z, 암호 가능)", "Formato 7Z (.7z, con contraseña)", "Формат 7Z (.7z, с паролем)", "7Z 格式（.7z・可設密碼）", "7Z 格式（.7z・可设密码）");
+            A("ctx.gz",      "GZ format (.gz, single file)", "GZ 形式（.gz・単一ファイル）", "GZ 형식(.gz, 단일 파일)", "Formato GZ (.gz, un archivo)", "Формат GZ (.gz, один файл)", "GZ 格式（.gz・單一檔案）", "GZ 格式（.gz・仅单文件）");
+            A("ctx.tar",     "TAR format (.tar)", "TAR 形式（.tar）", "TAR 형식(.tar)", "Formato TAR (.tar)", "Формат TAR (.tar)", "TAR 格式（.tar）", "TAR 格式（.tar）");
+            A("ctx.tgz",     "TAR.GZ format (.tar.gz)", "TAR.GZ 形式（.tar.gz）", "TAR.GZ 형식(.tar.gz)", "Formato TAR.GZ (.tar.gz)", "Формат TAR.GZ (.tar.gz)", "TAR.GZ 格式（.tar.gz）", "TAR.GZ 格式（.tar.gz）");
+
             // ---------------- 主窗口：工具栏 ----------------
             A("tb.open",    "Open", "開く", "열기", "Abrir", "Открыть", "開啟", "打开");
             A("tb.pack",    "Compress", "圧縮", "압축", "Comprimir", "Сжать", "壓縮", "压缩");
