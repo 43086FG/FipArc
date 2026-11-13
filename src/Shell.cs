@@ -110,8 +110,8 @@ namespace FipArc
             new PackFmt("fip", ".fip",    "ctx.fip"),
             new PackFmt("zip", ".zip",    "ctx.zip"),
             new PackFmt("7z",  ".7z",     "ctx.7z"),
-            new PackFmt("tar", ".tar",    "TAR 格式 (.tar)"),
-            new PackFmt("tgz", ".tar.gz", "TAR.GZ 格式 (.tar.gz)"),
+            new PackFmt("tar", ".tar",    "ctx.tar"),
+            new PackFmt("tgz", ".tar.gz", "ctx.tgz"),
             new PackFmt("gz",  ".gz",     "ctx.gz"),
         };
 
