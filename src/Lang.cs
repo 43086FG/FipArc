@@ -175,6 +175,28 @@ namespace FipArc
             A("pw.tneedtitle","Password required", "パスワードが必要", "암호 필요", "Se necesita contraseña", "Требуется пароль", "需要密碼", "需要密码");
             A("pw.open",     "Open", "開く", "열기", "Abrir", "Открыть", "開啟", "打开");
             A("cache.summary","{0} files / {1} folders, about {2}", "{0} ファイル / {1} フォルダー、約 {2}", "{0}개 파일 / {1}개 폴더, 약 {2}", "{0} archivos / {1} carpetas, unos {2}", "{0} файлов / {1} папок, около {2}", "{0} 個檔案 / {1} 個資料夾，約 {2}", "{0} 个文件 / {1} 个目录，约 {2}");
+            A("prog.packed",    "Compressed to:", "圧縮先：", "압축 위치:", "Comprimido en:", "Сжато в:", "已壓縮為：", "已压缩为：");
+            A("prog.extracted", "Extracted to:", "展開先：", "압축 푼 위치:", "Extraído en:", "Извлечено в:", "已解壓縮到：", "已解压到：");
+            A("prog.pwset",     "(password protected)", "（パスワード保護）", "(암호 보호됨)", "(protegido con contraseña)", "(защищено паролем)", "（已設定密碼保護）", "（已设置密码保护）");
+            A("prog.okpack",    "Compressed {0} files.", "{0} ファイルを圧縮しました。", "{0}개 파일을 압축했습니다.", "Se comprimieron {0} archivos.", "Сжато файлов: {0}.", "成功壓縮 {0} 個檔案。", "成功压缩 {0} 个文件。");
+            A("prog.okextract", "Extracted {0} archives.", "{0} 個の書庫を展開しました。", "{0}개 압축 파일을 풀었습니다.", "Se extrajeron {0} archivos.", "Извлечено архивов: {0}.", "成功解壓縮 {0} 個壓縮檔。", "成功解压 {0} 个压缩包。");
+            A("prog.extfail",   "Extraction did not finish", "展開が完了しませんでした", "압축 풀기가 끝나지 않았습니다", "La extracción no terminó", "Извлечение не завершено", "解壓縮未完成", "解压未完成");
+            A("prog.cancelpw",  "Cancelled, or the password is wrong", "中止、またはパスワードが違います", "취소되었거나 암호가 틀렸습니다", "Cancelado o contraseña incorrecta", "Отменено или неверный пароль", "已取消或密碼不正確", "已取消或密码不正确");
+            A("prog.gzone",     "GZ can only hold a single file. Use FIP / ZIP / TAR for several.", "GZ は 1 ファイルのみです。複数なら FIP / ZIP / TAR を使ってください。", "GZ는 단일 파일만 가능합니다. 여러 개는 FIP / ZIP / TAR을 쓰세요.", "GZ solo admite un archivo. Usa FIP / ZIP / TAR para varios.", "GZ — только один файл. Для нескольких используйте FIP / ZIP / TAR.", "GZ 只能放單一檔案。多個請用 FIP / ZIP / TAR。", "GZ 只能压缩单个文件。多个请用 FIP / ZIP / TAR。");
+            A("prog.gzdir",     "GZ cannot compress folders. Use FIP / ZIP / TAR / TAR.GZ.", "GZ はフォルダーを圧縮できません。FIP / ZIP / TAR / TAR.GZ を使ってください。", "GZ는 폴더를 압축할 수 없습니다. FIP / ZIP / TAR / TAR.GZ를 쓰세요.", "GZ no puede comprimir carpetas. Usa FIP / ZIP / TAR / TAR.GZ.", "GZ не сжимает папки. Используйте FIP / ZIP / TAR / TAR.GZ.", "GZ 不能壓縮資料夾。請用 FIP / ZIP / TAR / TAR.GZ。", "GZ 不能压缩文件夹。请用 FIP / ZIP / TAR / TAR.GZ。");
+            A("prog.cantpack",  "Cannot compress", "圧縮できません", "압축할 수 없음", "No se puede comprimir", "Не удалось сжать", "無法壓縮", "无法压缩");
+            A("prog.writefail", "But {0} files could not be written:", "ただし {0} ファイルを書き出せませんでした：", "단 {0}개 파일을 쓰지 못했습니다:", "Pero {0} archivos no se pudieron escribir:", "Но {0} файлов не удалось записать:", "但有 {0} 個檔案沒能寫出：", "其中 {0} 个文件没能写出：");
+            A("prog.writehint", "Usually read-only, in use, or blocked by antivirus.", "多くは読み取り専用・使用中・ウイルス対策による遮断です。", "보통 읽기 전용, 사용 중, 백신 차단이 원인입니다.", "Suele ser solo lectura, en uso o bloqueado por el antivirus.", "Обычно только для чтения, занят или блокирует антивирус.", "常見原因是唯讀 / 被占用 / 被防毒攔截。", "常见原因是只读 / 被占用 / 被杀毒软件拦截。");
+            A("err.title",      "FipArc error", "FipArc エラー", "FipArc 오류", "Error de FipArc", "Ошибка FipArc", "FipArc 錯誤", "FipArc 错误");
+            A("err.pw3",        "Wrong password 3 times, cancelled.", "パスワードを 3 回間違えたため中止しました。", "암호를 3번 틀려 취소했습니다.", "Contraseña incorrecta 3 veces, cancelado.", "Пароль неверен 3 раза, отменено.", "密碼連續 3 次不正確，已取消。", "密码连续 3 次不正确，已取消。");
+            A("err.cancelpw",   "Password incorrect, please try again.", "パスワードが違います。もう一度入力してください。", "암호가 틀렸습니다. 다시 입력하세요.", "Contraseña incorrecta, inténtalo de nuevo.", "Неверный пароль, попробуйте снова.", "密碼不正確，請重新輸入。", "密码不正确，请重新输入。");
+            A("uninst.missing", "Uninstall.exe not found. Use Settings > Apps to uninstall, or delete the install folder manually.",
+                                "Uninstall.exe が見つかりません。設定 > アプリから削除するか、インストール先を手動で削除してください。",
+                                "Uninstall.exe를 찾을 수 없습니다. 설정 > 앱에서 제거하거나 설치 폴더를 직접 삭제하세요.",
+                                "No se encontró Uninstall.exe. Usa Configuración > Aplicaciones o borra la carpeta.",
+                                "Uninstall.exe не найден. Удалите через Параметры > Приложения или вручную.",
+                                "找不到解除安裝程式 Uninstall.exe。可從「設定 > 應用程式」移除，或手動刪除安裝資料夾。",
+                                "找不到卸载程序 Uninstall.exe。可从「设置 > 应用」卸载，或手动删除安装目录。");
             A("log.created",  "Created {0} ({1})", "{0} を作成（{1}）", "{0} 생성됨 ({1})", "Creado {0} ({1})", "Создан {0} ({1})", "已建立 {0}（{1}）", "已创建 {0}（{1}）");
             A("st.packing",  "Compressing…", "圧縮中…", "압축 중…", "Comprimiendo…", "Сжатие…", "正在壓縮…", "正在压缩…");
             A("st.extracting","Extracting…", "展開中…", "압축 푸는 중…", "Extrayendo…", "Извлечение…", "正在解壓縮…", "正在解压…");

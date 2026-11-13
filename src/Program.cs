@@ -69,7 +69,7 @@ namespace FipArc
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "FipArc 错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, Lang.S("err.title"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -87,13 +87,13 @@ namespace FipArc
                 if (need)
                 {
                     pwd = PasswordForm.AskOpen(null, Path.GetFileName(path),
-                        i > 0 ? "密码不正确，请重新输入。" : "");
+                        i > 0 ? Lang.S("err.cancelpw") : "");
                     if (pwd == null) return false;
                 }
                 try { act(pwd); return true; }
                 catch (WrongPasswordException) { need = true; continue; }
             }
-            MessageBox.Show("密码连续 3 次不正确，已取消。", "错误",
+            MessageBox.Show(Lang.S("err.pw3"), Lang.S("err.title"),
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return false;
         }
@@ -108,14 +108,14 @@ namespace FipArc
             {
                 if (paths.Length > 1)
                 {
-                    MessageBox.Show("GZ 格式只能压缩单个文件。\n要压缩多个文件请选 FIP / ZIP / TAR。",
-                        "无法压缩", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(Lang.S("prog.gzone"),
+                        Lang.S("prog.cantpack"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 if (Directory.Exists(paths[0]))
                 {
-                    MessageBox.Show("GZ 格式不能压缩文件夹。\n请改用 FIP / ZIP / TAR / TAR.GZ。",
-                        "无法压缩", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(Lang.S("prog.gzdir"),
+                        Lang.S("prog.cantpack"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
             }
@@ -132,7 +132,7 @@ namespace FipArc
                 if (pwd == null) return;      // 用户取消
             }
 
-            using (BusyForm busy = new BusyForm("正在压缩…"))
+            using (BusyForm busy = new BusyForm(Lang.S("st.packing")))
             {
                 busy.Show();
                 Application.DoEvents();
@@ -155,14 +155,14 @@ namespace FipArc
                 }
                 busy.Close();
                 string note = (fmt == "fip" && !string.IsNullOrEmpty(pwd))
-                    ? Environment.NewLine + "（已设置密码保护）" : "";
+                    ? Environment.NewLine + Lang.S("prog.pwset") : "";
                 if (err != null && ok == 0)
-                    MessageBox.Show(err, "压缩失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(err, Lang.S("dlg.packfail"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 else if (ok == 1 && last != null)
-                    MessageBox.Show("已压缩为：" + Environment.NewLine + last + note, "完成",
+                    MessageBox.Show(Lang.S("prog.packed") + Environment.NewLine + last + note, Lang.S("dlg.done"),
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 else
-                    MessageBox.Show(string.Format("成功压缩 {0} 个文件。", ok) + note, "完成",
+                    MessageBox.Show(string.Format(Lang.S("prog.okpack"), ok) + note, Lang.S("dlg.done"),
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -206,7 +206,7 @@ namespace FipArc
             int failedFiles = 0;
             string err = null;
             string lastDir = null;
-            using (BusyForm busy = new BusyForm("正在解压…"))
+            using (BusyForm busy = new BusyForm(Lang.S("st.extracting")))
             {
                 busy.Show();
                 Application.DoEvents();
@@ -232,21 +232,21 @@ namespace FipArc
                     {
                         try { if (Directory.Exists(dest) && Directory.GetFileSystemEntries(dest).Length == 0) Directory.Delete(dest); }
                         catch { }
-                        err = "已取消或密码不正确";
+                        err = Lang.S("prog.cancelpw");
                     }
                 }
                 busy.Close();
             }
             if (err != null && ok == 0)
-                MessageBox.Show(err, "解压未完成", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(err, Lang.S("prog.extfail"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             else if (ok == 1 && lastDir != null)
-                MessageBox.Show("已解压到：" + Environment.NewLine + lastDir, "完成",
+                MessageBox.Show(Lang.S("prog.extracted") + Environment.NewLine + lastDir, Lang.S("dlg.done"),
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             else if (ok > 0)
-                MessageBox.Show(string.Format("成功解压 {0} 个压缩包。", ok)
+                MessageBox.Show(string.Format(Lang.S("prog.okextract"), ok)
                     + (failedFiles > 0 ? Environment.NewLine + Environment.NewLine +
-                       "其中 " + failedFiles + " 个文件没能写出：" + Environment.NewLine +
-                       "常见原因是只读 / 被占用 / 被杀毒软件拦截。" : ""), "完成",
+                       string.Format(Lang.S("prog.writefail"), failedFiles) + Environment.NewLine +
+                       Lang.S("prog.writehint") : ""), Lang.S("dlg.done"),
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -325,7 +325,7 @@ namespace FipArc
                     }
                     bool done = UnlockAndRun(path, delegate(string pw) { last = Convert2.FromFip(path, pw); });
                     if (done) ok++;
-                    else err = "已取消或密码不正确";
+                    else err = Lang.S("prog.cancelpw");
                 }
                 busy.Close();
             }
@@ -414,8 +414,8 @@ namespace FipArc
                 Process.Start(setup);
                 return;
             }
-            MessageBox.Show("找不到卸载程序 Uninstall.exe。\n可以到控制面板「程序和功能」里卸载，或手动删除安装目录。",
-                "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(Lang.S("uninst.missing"),
+                Lang.S("pw.hint"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 

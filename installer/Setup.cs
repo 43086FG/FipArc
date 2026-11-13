@@ -34,7 +34,7 @@ namespace FipArcSetup
         public const string MENU_NAME = "FipArc";
 #endif
         public const string APP_SUB = "压缩工具";
-        public const string VERSION = "1.4.0";
+        public const string VERSION = "1.4.1";
         public const string PUBLISHER = "43086FG";
 
         public static string DefaultDir
