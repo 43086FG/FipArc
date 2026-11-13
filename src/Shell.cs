@@ -54,6 +54,15 @@ namespace FipArc
             ".fip"
         };
 
+        /// <summary>
+        /// 右键菜单覆盖的压缩包格式。比 ArchiveExts 宽得多：
+        /// ArchiveExts 只放我们"抢默认关联"的（现在只有 .fip），
+        /// 但用户右键一个 .zip / .7z / .rar 时也该能看到"解压到当前文件夹"。
+        /// </summary>
+        public static readonly string[] MenuArchiveExts = {
+            ".fip", ".zip", ".7z", ".rar", ".tar", ".gz", ".tar.gz", ".tgz",
+            ".bz2", ".xz", ".cab", ".iso", ".jar", ".lzh", ".arj", ".z", ".lz"
+        };
         /// <summary>本软件自己的格式</summary>
         public static readonly string[] OwnExts = {
 #if SE
@@ -154,13 +163,13 @@ namespace FipArc
                         iconPath, Q(exePath) + " /fromfip \"%1\"");
             }
 
-            // ---- 压缩包上：解压 / 打开 ----
-            foreach (string ext in ArchiveExts)
+            // ---- 压缩包上：解压 / 打开（所有能打开的组合都挂，不只是 .fip）----
+            foreach (string ext in MenuArchiveExts)
             {
                 string baseKey = SfaKey(ext);
                 RegMenu(baseKey + @"\shell\FipArcExtract", Lang.S("ctx.extract"),
                         iconPath, Q(exePath) + " /extract \"%1\"");
-                RegMenu(baseKey + @"\shell\FipArcOpen", "用 FipArc 打开(&O)",
+                RegMenu(baseKey + @"\shell\FipArcOpen", Lang.S("ctx.open"),
                         iconPath, Q(exePath) + " /open \"%1\"");
                 using (RegistryKey k = Registry.CurrentUser.CreateSubKey(baseKey + @"\shell\FipArcExtract"))
                     if (k != null)
@@ -657,7 +666,7 @@ namespace FipArc
             }
 
             // 解压 / 打开
-            foreach (string ext in ArchiveExts)
+            foreach (string ext in MenuArchiveExts)
             {
                 Del(SfaKey(ext) + @"\shell\FipArcExtract");
                 Del(SfaKey(ext) + @"\shell\FipArcOpen");

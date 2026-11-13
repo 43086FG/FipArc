@@ -24,6 +24,7 @@ namespace FipArc
         TextBox log;
         StatusStrip statusBar;
         ToolStripStatusLabel statusText;
+        ToolStripProgressBar progress;
         string currentArchive;
         string currentPassword = "";
 
@@ -212,6 +213,13 @@ namespace FipArc
             statusBar = new StatusStrip();
             statusText = new ToolStripStatusLabel(Lang.S("st.ready"));
             statusBar.Items.Add(statusText);
+
+            // 进度条：压缩/解压时显示，平时隐藏
+            progress = new ToolStripProgressBar();
+            progress.Size = new Size(220, 16);
+            progress.Visible = false;
+            progress.Style = ProgressBarStyle.Continuous;
+            statusBar.Items.Add(progress);
             Controls.Add(statusBar);
 
             // 关键：Dock 是按控件集合的【倒序】依次计算的。
@@ -750,6 +758,7 @@ namespace FipArc
                 if (paths.Length > 1) outPath = Path.Combine(baseDir, Path.GetFileName(baseDir) + ext);
 
                 SetStatus(Lang.S("st.packing"));
+                ShowProgress(0, 0);       // 走马灯进度条
                 Application.DoEvents();
 
                 // .fip / .zip / .7z 问密码；f 格式转换不问
@@ -790,16 +799,17 @@ namespace FipArc
 
                 outPath = Convert2.UniquePath(outPath);
                 File.WriteAllBytes(outPath, data);
-                Log(string.Format("已创建 {0}  ({1})", Path.GetFileName(outPath), FormatSize(data.Length)));
-                SetStatus(Lang.S("setup.finished"));
+                Log(string.Format(Lang.S("log.created"), Path.GetFileName(outPath), FormatSize(data.Length)));
+                HideProgress();
+                SetStatus(Lang.S("dlg.done"));
                 LoadArchive(outPath);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(this, ex.Message, Lang.S("dlg.packfail"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Log("[错误] " + ex.Message);
+                Log(Lang.S("dlg.packfail") + ": " + ex.Message);
             }
-            finally { Cursor = Cursors.Default; }
+            finally { Cursor = Cursors.Default; HideProgress(); }
         }
 
         void AddToArchive()
@@ -884,7 +894,7 @@ namespace FipArc
                 if (Archive.LastErrors.Count > 0) { ShowExtractErrors(); return; }
 
                 Log("已解出「" + (ent != null ? ent.Name : folder) + "」到 " + destRoot);
-                SetStatus("已解出");
+                SetStatus(Lang.S("dlg.done"));
                 try { Process.Start("explorer.exe", "\"" + destRoot + "\""); } catch { }
             }
             catch (Exception ex2)
@@ -946,7 +956,8 @@ namespace FipArc
             try
             {
                 Cursor = Cursors.WaitCursor;
-                SetStatus("正在解压…");
+                SetStatus(Lang.S("st.extracting"));
+            ShowProgress(0, 0);
                 dest = Convert2.UniquePath(dest);
                 Directory.CreateDirectory(dest);
                 int count = 0;
@@ -959,14 +970,15 @@ namespace FipArc
                     ex.ExtractAll(destFinal, delegate(int n, string name)
                     {
                         count = n;
-                        if (n % 8 == 0) { SetStatus("正在解压 " + name); Application.DoEvents(); }
+                        if (n % 4 == 0) { SetStatus(Lang.S("st.extracting") + " " + name); ShowProgress(0, 0); Application.DoEvents(); }
                     });
                 }, archive);
 
                 if (!ok) { Log("[取消] 解压未完成（密码问题或用户取消）"); return; }
 
                 Log(string.Format("已解压 {0} 个文件到 {1}", count, dest));
-                SetStatus("解压完成");
+                HideProgress();
+            SetStatus(Lang.S("dlg.done"));
 
                 // 有文件写不进去时不要整包失败，列出来让用户知道是哪些
                 if (Archive.LastErrors.Count > 0) { ShowExtractErrors(); return; }
@@ -1054,6 +1066,31 @@ namespace FipArc
                     return;
                 }
             }
+        }
+
+        /// <summary>显示/隐藏进度条。total<=0 表示不确定进度（走马灯）</summary>
+        void ShowProgress(int done, int total)
+        {
+            if (progress == null) return;
+            progress.Visible = true;
+            if (total > 0)
+            {
+                progress.Style = ProgressBarStyle.Continuous;
+                progress.Maximum = Math.Max(total, 1);
+                progress.Value = Math.Min(done, progress.Maximum);
+            }
+            else
+            {
+                progress.Style = ProgressBarStyle.Marquee;
+            }
+            Application.DoEvents();      // 让进度真的动起来
+        }
+
+        void HideProgress()
+        {
+            if (progress == null) return;
+            progress.Visible = false;
+            try { progress.Style = ProgressBarStyle.Continuous; progress.Value = 0; } catch { }
         }
 
         void ClearCache()

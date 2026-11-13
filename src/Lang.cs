@@ -110,6 +110,7 @@ namespace FipArc
             // ---------------- 右键菜单 ----------------
             A("ctx.pack",    "Compress to(&C)", "圧縮(&C)", "압축(&C)", "Comprimir(&C)", "Сжать(&C)", "壓縮為(&C)", "压缩为(&C)");
             A("ctx.extract", "Extract here(&E)", "ここに展開(&E)", "여기에 풀기(&E)", "Extraer aquí(&E)", "Извлечь сюда(&E)", "解壓縮到此處(&E)", "解压到当前文件夹(&E)");
+            A("ctx.open",    "Open with FipArc(&O)", "FipArc で開く(&O)", "FipArc로 열기(&O)", "Abrir con FipArc(&O)", "Открыть в FipArc(&O)", "用 FipArc 開啟(&O)", "用 FipArc 打开(&O)");
             A("ctx.fip",     "FIP format (.fip, password ok)", "FIP 形式（.fip・パスワード可）", "FIP 형식(.fip, 암호 가능)", "Formato FIP (.fip, con contraseña)", "Формат FIP (.fip, с паролем)", "FIP 格式（.fip・可設密碼）", "FIP 格式（.fip・可设密码）");
             A("ctx.zip",     "ZIP format (.zip, password ok)", "ZIP 形式（.zip・パスワード可）", "ZIP 형식(.zip, 암호 가능)", "Formato ZIP (.zip, con contraseña)", "Формат ZIP (.zip, с паролем)", "ZIP 格式（.zip・可設密碼）", "ZIP 格式（.zip・可设密码）");
             A("ctx.7z",      "7Z format (.7z, password ok)", "7Z 形式（.7z・パスワード可）", "7Z 형식(.7z, 암호 가능)", "Formato 7Z (.7z, con contraseña)", "Формат 7Z (.7z, с паролем)", "7Z 格式（.7z・可設密碼）", "7Z 格式（.7z・可设密码）");
@@ -147,6 +148,7 @@ namespace FipArc
             A("pw.tneedtitle","Password required", "パスワードが必要", "암호 필요", "Se necesita contraseña", "Требуется пароль", "需要密碼", "需要密码");
             A("pw.open",     "Open", "開く", "열기", "Abrir", "Открыть", "開啟", "打开");
             A("cache.summary","{0} files / {1} folders, about {2}", "{0} ファイル / {1} フォルダー、約 {2}", "{0}개 파일 / {1}개 폴더, 약 {2}", "{0} archivos / {1} carpetas, unos {2}", "{0} файлов / {1} папок, около {2}", "{0} 個檔案 / {1} 個資料夾，約 {2}", "{0} 个文件 / {1} 个目录，约 {2}");
+            A("log.created",  "Created {0} ({1})", "{0} を作成（{1}）", "{0} 생성됨 ({1})", "Creado {0} ({1})", "Создан {0} ({1})", "已建立 {0}（{1}）", "已创建 {0}（{1}）");
             A("st.packing",  "Compressing…", "圧縮中…", "압축 중…", "Comprimiendo…", "Сжатие…", "正在壓縮…", "正在压缩…");
             A("st.extracting","Extracting…", "展開中…", "압축 푸는 중…", "Extrayendo…", "Извлечение…", "正在解壓縮…", "正在解压…");
             A("dlg.openfail",   "Could not open", "開けません", "열 수 없음", "No se pudo abrir", "Не удалось открыть", "開啟失敗", "打开失败");
