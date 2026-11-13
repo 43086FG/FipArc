@@ -687,7 +687,10 @@ namespace FipArc
             switch (k)
             {
                 case ArchiveKind.Zip:
-                    // 带密码的 ZIP 要用自己写的解密器，.NET 的 ZipArchive 不支持加密
+                    // AES(WinZip AE-1/AE-2) 加密的 zip 我们自己的 ZipCrypto 解不了，
+                    // 硬解只会得到一堆 0 字节空文件 —— 交给 7-Zip。
+                    if (ZipPacked.IsAes(path) && SevenZip.Available) return new SevenZipExtractor(path);
+                    // 普通 ZipCrypto 加密：用自己写的解密器（.NET 的 ZipArchive 不支持加密）
                     if (ZipPacked.IsEncrypted(path)) return new EncryptedZipExtractor(path);
                     return new ZipExtractor(path);
                 case ArchiveKind.Tar: return new TarExtractor(path);

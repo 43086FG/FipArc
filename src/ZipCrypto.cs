@@ -94,21 +94,99 @@ namespace FipArc
         const uint SIG_EOCD = 0x06054b50;
 
         // ---------------- 判断是否加密 ----------------
+        //
+        // 老实现只读文件开头 8 字节（第一个 local header）的 flag bit0。
+        // 但很多压缩工具生成的 zip 第一个条目是【目录】，目录不加密 ——
+        // 于是 21MB 的 AES 加密包被判成"没密码"，不弹密码框，
+        // 解出来一堆 0 字节的空文件。
+        //
+        // 现在扫整个中央目录：任意一个条目标了加密位（或 method=99 AES）就算加密。
         public static bool IsEncrypted(string path)
         {
             try
             {
                 using (FileStream fs = File.OpenRead(path))
                 {
+                    // 先快速看一眼第一个 local header：如果是加密的文件条目，直接返回
                     byte[] h = new byte[8];
-                    if (fs.Read(h, 0, 8) < 8) return false;
-                    if (BitConverter.ToUInt32(h, 0) != SIG_LOCAL) return false;
-                    ushort flags = BitConverter.ToUInt16(h, 6);
-                    return (flags & 0x0001) != 0;
+                    if (fs.Read(h, 0, 8) >= 8 && BitConverter.ToUInt32(h, 0) == SIG_LOCAL)
+                    {
+                        if ((BitConverter.ToUInt16(h, 6) & 0x0001) != 0) return true;
+                    }
+                    // 再扫中央目录
+                    return ScanCentral(fs, true);
                 }
             }
             catch { return false; }
         }
+
+        /// <summary>是否是 AES（WinZip AE-1/AE-2）加密的 zip —— 我们自己解不了，得交给 7-Zip</summary>
+        public static bool IsAes(string path)
+        {
+            try
+            {
+                using (FileStream fs = File.OpenRead(path))
+                    return ScanCentral(fs, false);
+            }
+            catch { return false; }
+        }
+
+        /// <summary>
+        /// 扫中央目录。anyEncrypted=true 时判断"有没有加密条目"；
+        /// false 时判断"有没有 AES(99) 条目"。
+        /// </summary>
+        static bool ScanCentral(FileStream fs, bool anyEncrypted)
+        {
+            long len = fs.Length;
+            if (len < 22) return false;
+
+            // 从尾部找 EOCD 签名 PK\x05\x06（最多回退 64KB，注释最长 65535）
+            int back = (int)Math.Min(65557, len);
+            byte[] tail = new byte[back];
+            fs.Position = len - back;
+            int got = 0;
+            while (got < back)
+            {
+                int r = fs.Read(tail, got, back - got);
+                if (r <= 0) break;
+                got += r;
+            }
+            int eocd = -1;
+            for (int i = got - 22; i >= 0; i--)
+                if (tail[i] == 0x50 && tail[i + 1] == 0x4B && tail[i + 2] == 0x05 && tail[i + 3] == 0x06) { eocd = i; break; }
+            if (eocd < 0) return false;
+
+            long cdOffset = BitConverter.ToUInt32(tail, eocd + 16);
+            int count = BitConverter.ToUInt16(tail, eocd + 10);
+            if (count == 0) return false;
+
+            // 逐个读中央目录条目
+            fs.Position = cdOffset;
+            byte[] buf = new byte[46];
+            for (int n = 0; n < count; n++)
+            {
+                if (fs.Read(buf, 0, 46) < 46) break;
+                if (BitConverter.ToUInt32(buf, 0) != SIG_CENTRAL) break;
+                ushort flags = BitConverter.ToUInt16(buf, 8);
+                ushort method = BitConverter.ToUInt16(buf, 10);
+                ushort nameLen = BitConverter.ToUInt16(buf, 28);
+                ushort extraLen = BitConverter.ToUInt16(buf, 30);
+                ushort commentLen = BitConverter.ToUInt16(buf, 32);
+
+                if (anyEncrypted)
+                {
+                    if ((flags & 0x0001) != 0) return true;      // 传统加密位
+                    if (method == 99) return true;               // AES
+                }
+                else
+                {
+                    if (method == 99) return true;               // AES
+                }
+                fs.Position += nameLen + extraLen + commentLen;
+            }
+            return false;
+        }
+
 
         // =====================================================================
         //  写入
