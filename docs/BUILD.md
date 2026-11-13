@@ -14,11 +14,10 @@ FipArc 使用 Windows 自带的 C# 编译器构建，**不需要 Visual Studio /
 git clone https://github.com/<you>/FipArc.git
 cd FipArc
 
-:: 完整版 -> build\FipArcSetup.exe
+:: -> build\FipArcSetup.exe
 build.cmd
 
-:: SE 版 -> build_se\FipArcSetup.exe
-build.cmd se
+
 ```
 
 Both commands produce a single self-contained `FipArcSetup.exe`.
@@ -74,7 +73,8 @@ Anything newer will fail to compile.
 /resource:<out>\FipArc.exe,FipArc.exe
 ```
 
-`/define:SE` selects the SE edition (no legacy `f*` formats, curated association set).
+There is a single edition. `build.cmd` always passes `/define:SE`; the `f*` format
+conversion code in `src/Convert.cs` is legacy and simply not reachable in the shipped build.
 
 ---
 

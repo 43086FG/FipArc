@@ -1,6 +1,6 @@
 @echo off
-rem build.cmd          -> 完整版   (目录 build\)
-rem build.cmd se       -> 精简版   (目录 build_se\)
+rem build.cmd          -> 构建 FipArc（唯一版本，输出到 build\）
+rem build.cmd se       -> 同上，兼容旧用法（输出到 build_se\）
 setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
@@ -16,8 +16,8 @@ set REFS=/r:System.dll /r:System.Drawing.dll /r:System.Windows.Forms.dll /r:"%WP
 set OPTS=/nologo /optimize+ /codepage:65001 /win32icon:assets\app.ico
 
 set OUT=build
-set DEF=
-set LABEL=full
+set DEF=/define:SE
+set LABEL=single
 
 if /i "%~1"=="se" (
   set OUT=build_se

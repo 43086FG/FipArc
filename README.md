@@ -59,14 +59,15 @@ No Visual Studio or MSBuild required — only the C# compiler that ships with Wi
 无需 Visual Studio / MSBuild，只用系统自带的 C# 编译器。
 
 ```bat
-:: 简体中文
-build.cmd            :: full edition  -> build\
-build.cmd se         :: SE edition    -> build_se\
-
-:: English
-:: build.cmd         full edition  -> build\FipArcSetup.exe
-:: build.cmd se      SE edition    -> build_se\FipArcSetup.exe
+build.cmd
+:: -> build\FipArcSetup.exe
 ```
+
+One command, one output: a self-contained `FipArcSetup.exe` (~4 MB).
+
+> Earlier versions shipped two editions; the SE edition replaced the full one
+> in 1.1.0 and is now the only build. 早期版本有完整版和 SE 两个版本，
+> 从 1.1.0 起 SE 取代完整版，现在只有一个版本。
 
 See [docs/BUILD.md](docs/BUILD.md) for details on the compiler flags, embedded resources
 and the third-party binaries you need to download yourself.
