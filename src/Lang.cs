@@ -195,6 +195,7 @@ namespace FipArc
             A("err.title",      "FipArc error", "FipArc エラー", "FipArc 오류", "Error de FipArc", "Ошибка FipArc", "FipArc 錯誤", "FipArc 错误");
             A("err.pw3",        "Wrong password 3 times, cancelled.", "パスワードを 3 回間違えたため中止しました。", "암호를 3번 틀려 취소했습니다.", "Contraseña incorrecta 3 veces, cancelado.", "Пароль неверен 3 раза, отменено.", "密碼連續 3 次不正確，已取消。", "密码连续 3 次不正确，已取消。");
             A("err.cancelpw",   "Password incorrect, please try again.", "パスワードが違います。もう一度入力してください。", "암호가 틀렸습니다. 다시 입력하세요.", "Contraseña incorrecta, inténtalo de nuevo.", "Неверный пароль, попробуйте снова.", "密碼不正確，請重新輸入。", "密码不正确，请重新输入。");
+            A("uninst.confirm", "Uninstall FipArc and remove all of its settings?", "FipArc をアンインストールし、設定もすべて削除しますか？", "FipArc를 제거하고 모든 설정도 삭제할까요?", "¿Desinstalar FipArc y borrar toda su configuración?", "Удалить FipArc и все его настройки?", "要解除安裝 FipArc 並刪除所有設定嗎？", "要卸载 FipArc 并删除所有设置吗？");
             A("uninst.missing", "Uninstall.exe not found. Use Settings > Apps to uninstall, or delete the install folder manually.",
                                 "Uninstall.exe が見つかりません。設定 > アプリから削除するか、インストール先を手動で削除してください。",
                                 "Uninstall.exe를 찾을 수 없습니다. 설정 > 앱에서 제거하거나 설치 폴더를 직접 삭제하세요.",

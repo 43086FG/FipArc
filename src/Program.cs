@@ -59,7 +59,7 @@ namespace FipArc
                         DoOpen(rest);
                         return;
                     case "/uninstall":
-                        DoUninstall();
+                        DoUninstall(Array.IndexOf(args, "/quiet") >= 0);
                         return;
                     default:
                         // 直接双击文件：第一个参数就是路径
@@ -459,16 +459,53 @@ namespace FipArc
         }
 
         // ---------- 卸载 ----------
-        static void DoUninstall()
+        /// <summary>
+        /// 卸载。不调用独立的 Uninstall.exe（会被安全软件拦），由主程序自己做：
+        /// 撤销所有注册表项 -> 删掉安装目录里的文件 -> 用一个批处理删掉本 exe 自己。
+        /// quiet=true 时不弹确认框（供 QuietUninstallString 使用）。
+        /// </summary>
+        static void DoUninstall(bool quiet)
         {
-            string setup = Path.Combine(Application.StartupPath, "Uninstall.exe");
-            if (File.Exists(setup))
+            string dir = Application.StartupPath;
+            if (!quiet)
             {
-                Process.Start(setup);
-                return;
+                if (MessageBox.Show(Lang.S("uninst.confirm") + Environment.NewLine + Environment.NewLine + dir,
+                        Lang.S("tools.uninstall2"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    return;
             }
-            MessageBox.Show(Lang.S("uninst.missing"),
-                Lang.S("pw.hint"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            try { Shell.UnregisterAll(dir); } catch { }
+
+            // 删掉除本 exe 之外的所有文件，再用批处理删本 exe 和空目录
+            string self = Application.ExecutablePath;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("@echo off");
+            sb.AppendLine("ping -n 3 127.0.0.1 >nul");
+            try
+            {
+                foreach (string f in Directory.GetFiles(dir))
+                {
+                    if (string.Equals(f, self, StringComparison.OrdinalIgnoreCase)) continue;
+                    try { File.Delete(f); } catch { sb.AppendLine("del /f /q \"" + f + "\""); }
+                }
+            }
+            catch { }
+            sb.AppendLine("del /f /q \"" + self + "\"");
+            sb.AppendLine("rd \"" + dir + "\"");
+            sb.AppendLine("del /f /q \"%~f0\"");
+            string bat = Path.Combine(Path.GetTempPath(), "fiparc_uninst_" + Guid.NewGuid().ToString("N") + ".bat");
+            try { File.WriteAllText(bat, sb.ToString(), Encoding.Default); } catch { return; }
+
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo(bat);
+                psi.UseShellExecute = false;
+                psi.CreateNoWindow = true;
+                psi.WindowStyle = ProcessWindowStyle.Hidden;
+                Process.Start(psi);
+            }
+            catch { }
+            Application.Exit();
         }
     }
 

@@ -824,11 +824,11 @@ namespace FipArc
                 k.SetValue("EstimatedSize", (int)sizeKB, RegistryValueKind.DWord);
                 k.SetValue("NoModify", 1, RegistryValueKind.DWord);
                 k.SetValue("NoRepair", 1, RegistryValueKind.DWord);
-                string uninst = Path.Combine(installDir, "Uninstall.exe");
-                if (!File.Exists(uninst)) uninst = exePath;
-                // 指向专门的 Uninstall.exe，不再让用户去点安装程序
-                k.SetValue("UninstallString", Q(uninst));
-                k.SetValue("QuietUninstallString", Q(uninst) + " /quiet");
+                // 不再依赖独立的 Uninstall.exe：很多安全软件（例如 360 主动防御）
+                // 会把陌生的卸载程序当病毒直接删掉/拦截，用户点了就"一闪而过"。
+                // 改成让主程序自己卸载 —— 它本来就在跑，安全软件已经放行。
+                k.SetValue("UninstallString", Q(exePath) + " /uninstall");
+                k.SetValue("QuietUninstallString", Q(exePath) + " /uninstall /quiet");
             }
         }
 
