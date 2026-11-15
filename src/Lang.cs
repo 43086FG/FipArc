@@ -152,13 +152,13 @@ namespace FipArc
             A("pw.need",     "Please enter the password.", "パスワードを入力してください。", "암호를 입력하세요.", "Introduce la contraseña.", "Введите пароль.", "請輸入密碼。", "请输入密码。");
             A("pw.hint",     "Hint", "ヒント", "힌트", "Aviso", "Подсказка", "提示", "提示");
             A("pw.tset",     "Set password", "パスワード設定", "암호 설정", "Establecer contraseña", "Задать пароль", "設定密碼", "设置密码");
-            A("pw.tipset",   "Set an open password for {0}. Leave empty for no encryption (anyone can open it).",
-                             "{0} に開くためのパスワードを設定します。空欄なら暗号化しません（誰でも開けます）。",
-                             "{0}의 열기 암호를 설정합니다. 비우면 암호화하지 않습니다(누구나 열 수 있음).",
-                             "Establece una contraseña para abrir {0}. Déjalo vacío para no cifrar (cualquiera podrá abrirlo).",
-                             "Задайте пароль для открытия {0}. Пусто — без шифрования (откроет любой).",
-                             "為 {0} 設定開啟密碼。留空表示不加密（任何人都能開啟）。",
-                             "为 {0} 设置打开密码。留空表示不加密（任何人都能打开）。");
+            A("pw.tipset",   "Set an open password for {0}.",
+                             "{0} に開くためのパスワードを設定します。",
+                             "{0}의 열기 암호를 설정합니다.",
+                             "Establece una contraseña para abrir {0}.",
+                             "Задайте пароль для открытия {0}.",
+                             "為 {0} 設定開啟密碼。",
+                             "为 {0} 设置打开密码。");
             A("pw.tneed",    "This file was password-protected by an older version.",
                              "このファイルは旧バージョンでパスワードが設定されています。",
                              "이 파일은 이전 버전에서 암호가 설정되었습니다.",
@@ -177,6 +177,8 @@ namespace FipArc
             A("zip.nopw",    "No password entered, so AES was not applied - the archive is not encrypted.", "パスワードが未入力のため AES は適用されず、暗号化されていません。", "암호를 입력하지 않아 AES가 적용되지 않았습니다(암호화 안 됨).", "No se introdujo contraseña, así que no se aplicó AES: el archivo no está cifrado.", "Пароль не введён, поэтому AES не применён — архив не зашифрован.", "沒有輸入密碼，因此未套用 AES，壓縮檔沒有加密。", "没有输入密码，因此未应用 AES，压缩包没有加密。");
             A("pw.aes",     "Use AES-256 encryption (stronger)", "AES-256 暗号化を使う（より安全）", "AES-256 암호화 사용(더 안전)", "Usar cifrado AES-256 (más seguro)", "Использовать AES-256 (надёжнее)", "使用 AES-256 加密（更安全）", "使用 AES-256 加密（更安全）");
             A("pw.aestip",  "ZipCrypto is easy to break; AES-256 is not. Very old tools may fail to open it.", "ZipCrypto は解読されやすい。AES-256 は安全だが、古いソフトでは開けないことがある。", "ZipCrypto는 쉽게 깨집니다. AES-256은 안전하지만 아주 오래된 도구는 못 열 수 있습니다.", "ZipCrypto se rompe fácil; AES-256 no. Herramientas muy antiguas podrían no abrirlo.", "ZipCrypto ломается легко, AES-256 — нет. Очень старые программы могут не открыть.", "ZipCrypto 容易被破解，AES-256 不会；但很旧的软件可能打不开。", "ZipCrypto 容易被破解，AES-256 不会；但很旧的软件可能打不开。");
+            A("pw.encrypt", "Encrypt this archive", "この書庫を暗号化する", "이 압축 파일 암호화", "Cifrar este archivo", "Зашифровать этот архив", "加密此壓縮檔", "加密此压缩包");
+            A("pw.encryptip","Uncheck to create a plain, unencrypted archive.", "チェックを外すと暗号化しません。", "체크를 해제하면 암호화하지 않습니다.", "Desmarca para crear un archivo sin cifrar.", "Снимите галочку, чтобы создать незашифрованный архив.", "取消勾選即不加密。", "取消勾选即不加密。");
             A("pw.he",      "Also encrypt file names", "ファイル名も暗号化する", "파일 이름도 암호화", "Cifrar también los nombres", "Зашифровать имена файлов", "同時加密檔案名稱", "同时加密文件名");
             A("pw.hetip",   "Without the password nobody can even see the file list.", "パスワードが無いとファイル一覧も見えません。", "암호가 없으면 파일 목록조차 볼 수 없습니다.", "Sin la contraseña nadie ve ni la lista de archivos.", "Без пароля не видно даже списка файлов.", "沒有密碼連檔案清單都看不到。", "没有密码连文件列表都看不到。");
             A("pw.open",     "Open", "開く", "열기", "Abrir", "Открыть", "開啟", "打开");
