@@ -142,7 +142,9 @@ namespace FipArc
                 pwd = PasswordForm.AskNew(null, what + " → ." + fmt, heText, he);
                 if (pwd == null) return;      // 用户取消
                 encryptHeaders = he == null || he[0];
-                useAes = he != null && he[0];
+                useAes = he != null && he[0] && !string.IsNullOrEmpty(pwd);
+                if (he != null && he[0] && string.IsNullOrEmpty(pwd))
+                    MessageBox.Show(Lang.S("zip.nopw"), Lang.S("pw.hint"), MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             using (BusyForm busy = new BusyForm(Lang.S("st.packing")))

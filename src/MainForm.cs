@@ -773,7 +773,10 @@ namespace FipArc
                     pwd = PasswordForm.AskNew(this, nameBase + ext, heText, he);
                     if (pwd == null) return;      // 用户取消
                     encryptHeaders = he == null || he[0];
-                    useAes = he != null && he[0];
+                    // 勾了 AES 但没填密码 -> AES 没有意义（会退化成不加密），关掉它并说明
+                    useAes = he != null && he[0] && !string.IsNullOrEmpty(pwd);
+                    if (he != null && he[0] && string.IsNullOrEmpty(pwd))
+                        Log(Lang.S("log.tip") + " " + Lang.S("zip.nopw"));
                 }
 
                 byte[] data;

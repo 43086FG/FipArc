@@ -174,6 +174,7 @@ namespace FipArc
                              "新版本建立的檔案不再需要密碼。",
                              "新版本创建的文件不再需要密码。");
             A("pw.tneedtitle","Password required", "パスワードが必要", "암호 필요", "Se necesita contraseña", "Требуется пароль", "需要密碼", "需要密码");
+            A("zip.nopw",    "No password entered, so AES was not applied - the archive is not encrypted.", "パスワードが未入力のため AES は適用されず、暗号化されていません。", "암호를 입력하지 않아 AES가 적용되지 않았습니다(암호화 안 됨).", "No se introdujo contraseña, así que no se aplicó AES: el archivo no está cifrado.", "Пароль не введён, поэтому AES не применён — архив не зашифрован.", "沒有輸入密碼，因此未套用 AES，壓縮檔沒有加密。", "没有输入密码，因此未应用 AES，压缩包没有加密。");
             A("pw.aes",     "Use AES-256 encryption (stronger)", "AES-256 暗号化を使う（より安全）", "AES-256 암호화 사용(더 안전)", "Usar cifrado AES-256 (más seguro)", "Использовать AES-256 (надёжнее)", "使用 AES-256 加密（更安全）", "使用 AES-256 加密（更安全）");
             A("pw.aestip",  "ZipCrypto is easy to break; AES-256 is not. Very old tools may fail to open it.", "ZipCrypto は解読されやすい。AES-256 は安全だが、古いソフトでは開けないことがある。", "ZipCrypto는 쉽게 깨집니다. AES-256은 안전하지만 아주 오래된 도구는 못 열 수 있습니다.", "ZipCrypto se rompe fácil; AES-256 no. Herramientas muy antiguas podrían no abrirlo.", "ZipCrypto ломается легко, AES-256 — нет. Очень старые программы могут не открыть.", "ZipCrypto 容易被破解，AES-256 不会；但很旧的软件可能打不开。", "ZipCrypto 容易被破解，AES-256 不会；但很旧的软件可能打不开。");
             A("pw.he",      "Also encrypt file names", "ファイル名も暗号化する", "파일 이름도 암호화", "Cifrar también los nombres", "Зашифровать имена файлов", "同時加密檔案名稱", "同时加密文件名");
