@@ -129,17 +129,21 @@ namespace FipArc
             // f 格式转换（fmp/fpg/fjp/fp4/fov/fxt）是"转码"，不问密码。
             string pwd = "";
             bool encryptHeaders = true;
+            bool useAes = false;
             if (fmt == "fip" || fmt == "zip" || fmt == "7z")
             {
                 string what = paths.Length == 1
                     ? Path.GetFileName(paths[0].TrimEnd('\\'))
                     : (paths.Length + " 个文件");
                 // 7z 多给一个「同时加密文件名」勾选框
-                bool[] he = (fmt == "7z") ? new bool[1] : null;
+                bool[] he = (fmt == "7z" || fmt == "zip") ? new bool[1] : null;
                 if (he != null) he[0] = true;
-                pwd = PasswordForm.AskNew(null, what + " → ." + fmt, he);
+                string heText = (fmt == "7z" || fmt == "zip") ? Lang.S(fmt == "7z" ? "pw.he" : "pw.aes") : null;
+                string heTip  = (fmt == "7z" || fmt == "zip") ? Lang.S(fmt == "7z" ? "pw.hetip" : "pw.aestip") : null;
+                pwd = PasswordForm.AskNew(null, what + " → ." + fmt, heText, heTip, he);
                 if (pwd == null) return;      // 用户取消
                 encryptHeaders = he == null || he[0];
+                useAes = he != null && he[0];
             }
 
             using (BusyForm busy = new BusyForm(Lang.S("st.packing")))
@@ -155,7 +159,7 @@ namespace FipArc
                     {
                         string baseDir = Directory.Exists(p) ? Path.GetDirectoryName(p.TrimEnd('\\')) : Path.GetDirectoryName(p);
                         string nameBase = Directory.Exists(p) ? Path.GetFileName(p.TrimEnd('\\')) : Path.GetFileNameWithoutExtension(p);
-                        byte[] data = PackOne(new string[] { p }, baseDir, nameBase, fmt, pwd, encryptHeaders);
+                        byte[] data = PackOne(new string[] { p }, baseDir, nameBase, fmt, pwd, encryptHeaders, useAes);
                         string outPath = Convert2.UniquePath(Path.Combine(baseDir, nameBase + ext));
                         File.WriteAllBytes(outPath, data);
                         last = outPath;
@@ -178,14 +182,14 @@ namespace FipArc
         }
 
         /// <summary>按指定格式打包</summary>
-        static byte[] PackOne(string[] paths, string baseDir, string displayName, string fmt, string pwd, bool encryptHeaders)
+        static byte[] PackOne(string[] paths, string baseDir, string displayName, string fmt, string pwd, bool encryptHeaders, bool useAes)
         {
             switch (fmt)
             {
                 case "fip":
                     return Archive.CreateFip(paths, baseDir, displayName, pwd);
                 case "zip":
-                    return Archive.CreateZip(paths, baseDir, pwd);   // pwd 非空则标准 ZipCrypto 加密
+                    return Archive.CreateZip(paths, baseDir, pwd, useAes);   // useAes 时用 WinZip AES-256
                 case "7z":
                     return Archive.Create7z(paths, baseDir, pwd, encryptHeaders);   // pwd 非空则 AES-256 加密
                 case "tar":

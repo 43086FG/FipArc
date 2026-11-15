@@ -763,21 +763,25 @@ namespace FipArc
                 // .fip / .zip / .7z 问密码；f 格式转换不问
                 string pwd = null;
                 bool encryptHeaders = true;
+                bool useAes = false;
                 if (ext == ".fip" || ext == ".zip" || ext == ".7z")
                 {
                     // 7z 多给一个「同时加密文件名」勾选框
-                    bool[] he = (ext == ".7z") ? new bool[1] : null;
+                    bool[] he = (ext == ".7z" || ext == ".zip") ? new bool[1] : null;
                     if (he != null) he[0] = true;
-                    pwd = PasswordForm.AskNew(this, nameBase + ext, he);
+                    string heText = (ext == ".7z" || ext == ".zip") ? Lang.S(ext == ".7z" ? "pw.he" : "pw.aes") : null;
+                    string heTip  = (ext == ".7z" || ext == ".zip") ? Lang.S(ext == ".7z" ? "pw.hetip" : "pw.aestip") : null;
+                    pwd = PasswordForm.AskNew(this, nameBase + ext, heText, heTip, he);
                     if (pwd == null) return;      // 用户取消
                     encryptHeaders = he == null || he[0];
+                    useAes = he != null && he[0];
                 }
 
                 byte[] data;
                 if (ext == ".fip")
                     data = Archive.CreateFip(paths, baseDir, nameBase, pwd);
                 else if (ext == ".zip")
-                    data = Archive.CreateZip(paths, baseDir, pwd);
+                    data = Archive.CreateZip(paths, baseDir, pwd, useAes);
                 else if (ext == ".7z")
                     data = Archive.Create7z(paths, baseDir, pwd, encryptHeaders);
                 else if (ext == ".tar")

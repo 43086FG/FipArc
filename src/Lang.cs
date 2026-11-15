@@ -56,6 +56,7 @@ namespace FipArc
             A("menu.file",    "&File", "ファイル(&F)", "파일(&F)", "&Archivo", "&Файл", "檔案(&F)", "文件(&F)");
             A("menu.pack",    "&Compress", "圧縮(&C)", "압축(&C)", "&Comprimir", "&Сжать", "壓縮(&C)", "压缩(&C)");
             A("menu.extract", "E&xtract", "解凍(&X)", "압축 풀기(&X)", "E&xtraer", "&Извлечь", "解壓縮(&X)", "解压(&X)");
+            A("menu.convert", "&Convert", "変換(&C)", "변환(&C)", "&Convertir", "&Преобразовать", "轉換(&C)", "格式转换(&C)");
             A("menu.tools",   "&Tools", "ツール(&T)", "도구(&T)", "&Herramientas", "&Инструменты", "工具(&T)", "工具(&T)");
             A("menu.help",    "&Help", "ヘルプ(&H)", "도움말(&H)", "A&yuda", "&Справка", "說明(&H)", "帮助(&H)");
             A("menu.open",    "Open Archive…", "書庫を開く…", "압축 파일 열기…", "Abrir archivo…", "Открыть архив…", "開啟壓縮檔…", "打开压缩包…");
@@ -173,6 +174,8 @@ namespace FipArc
                              "新版本建立的檔案不再需要密碼。",
                              "新版本创建的文件不再需要密码。");
             A("pw.tneedtitle","Password required", "パスワードが必要", "암호 필요", "Se necesita contraseña", "Требуется пароль", "需要密碼", "需要密码");
+            A("pw.aes",     "Use AES-256 encryption (stronger)", "AES-256 暗号化を使う（より安全）", "AES-256 암호화 사용(더 안전)", "Usar cifrado AES-256 (más seguro)", "Использовать AES-256 (надёжнее)", "使用 AES-256 加密（更安全）", "使用 AES-256 加密（更安全）");
+            A("pw.aestip",  "ZipCrypto is easy to break; AES-256 is not. Very old tools may fail to open it.", "ZipCrypto は解読されやすい。AES-256 は安全だが、古いソフトでは開けないことがある。", "ZipCrypto는 쉽게 깨집니다. AES-256은 안전하지만 아주 오래된 도구는 못 열 수 있습니다.", "ZipCrypto se rompe fácil; AES-256 no. Herramientas muy antiguas podrían no abrirlo.", "ZipCrypto ломается легко, AES-256 — нет. Очень старые программы могут не открыть.", "ZipCrypto 容易被破解，AES-256 不会；但很旧的软件可能打不开。", "ZipCrypto 容易被破解，AES-256 不会；但很旧的软件可能打不开。");
             A("pw.he",      "Also encrypt file names", "ファイル名も暗号化する", "파일 이름도 암호화", "Cifrar también los nombres", "Зашифровать имена файлов", "同時加密檔案名稱", "同时加密文件名");
             A("pw.hetip",   "Without the password nobody can even see the file list.", "パスワードが無いとファイル一覧も見えません。", "암호가 없으면 파일 목록조차 볼 수 없습니다.", "Sin la contraseña nadie ve ni la lista de archivos.", "Без пароля не видно даже списка файлов.", "沒有密碼連檔案清單都看不到。", "没有密码连文件列表都看不到。");
             A("pw.open",     "Open", "開く", "열기", "Abrir", "Открыть", "開啟", "打开");

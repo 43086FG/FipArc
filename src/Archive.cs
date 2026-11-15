@@ -732,18 +732,29 @@ namespace FipArc
         }
 
         /// <summary>打包成 ZIP；password 非空则用标准 ZipCrypto 加密</summary>
-        public static byte[] CreateZip(string[] paths, string baseDir, string password)
+        public static byte[] CreateZip(string[] paths, string baseDir, string password) { return CreateZip(paths, baseDir, password, false); }
+
+        /// <summary>打包 zip。useAes=true 时用 7-Zip 生成 WinZip AES-256 加密（安全性远高于 ZipCrypto）</summary>
+        public static byte[] CreateZip(string[] paths, string baseDir, string password, bool useAes)
         {
-            if (!string.IsNullOrEmpty(password))
-                return ZipPacked.Create(paths, baseDir, password);   // 自己实现的加密 ZIP
-            using (MemoryStream ms = new MemoryStream())
+            if (useAes && !string.IsNullOrEmpty(password))
             {
-                using (ZipArchive za = new ZipArchive(ms, ZipArchiveMode.Create, true))
+                string tmp = Path.Combine(Path.GetTempPath(), "FipArcZip_" + Guid.NewGuid().ToString("N"));
+                Directory.CreateDirectory(tmp);
+                string outFile = Path.Combine(tmp, "out.zip");
+                try
                 {
-                    foreach (string p in paths) AddToZip(za, p, baseDir);
+                    StringBuilder args = new StringBuilder();
+                    args.Append("a -tzip -y -bd -mem=AES256 \"").Append(outFile).Append("\"");
+                    args.Append(" -p\"").Append(password.Replace("\"", "")).Append("\"");
+                    foreach (string p in paths) args.Append(" \"").Append(p).Append("\"");
+                    SevenZip.Run(args.ToString(), 600000);
+                    if (!File.Exists(outFile)) throw new Exception("7-Zip 没有生成压缩包。");
+                    return File.ReadAllBytes(outFile);
                 }
-                return ms.ToArray();
+                finally { try { Directory.Delete(tmp, true); } catch { } }
             }
+            return ZipPacked.Create(paths, baseDir, password);
         }
 
         static void AddToZip(ZipArchive za, string path, string baseDir)
