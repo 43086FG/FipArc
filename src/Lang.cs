@@ -173,6 +173,8 @@ namespace FipArc
                              "新版本建立的檔案不再需要密碼。",
                              "新版本创建的文件不再需要密码。");
             A("pw.tneedtitle","Password required", "パスワードが必要", "암호 필요", "Se necesita contraseña", "Требуется пароль", "需要密碼", "需要密码");
+            A("pw.he",      "Also encrypt file names", "ファイル名も暗号化する", "파일 이름도 암호화", "Cifrar también los nombres", "Зашифровать имена файлов", "同時加密檔案名稱", "同时加密文件名");
+            A("pw.hetip",   "Without the password nobody can even see the file list.", "パスワードが無いとファイル一覧も見えません。", "암호가 없으면 파일 목록조차 볼 수 없습니다.", "Sin la contraseña nadie ve ni la lista de archivos.", "Без пароля не видно даже списка файлов.", "沒有密碼連檔案清單都看不到。", "没有密码连文件列表都看不到。");
             A("pw.open",     "Open", "開く", "열기", "Abrir", "Открыть", "開啟", "打开");
             A("cache.summary","{0} files / {1} folders, about {2}", "{0} ファイル / {1} フォルダー、約 {2}", "{0}개 파일 / {1}개 폴더, 약 {2}", "{0} archivos / {1} carpetas, unos {2}", "{0} файлов / {1} папок, около {2}", "{0} 個檔案 / {1} 個資料夾，約 {2}", "{0} 个文件 / {1} 个目录，约 {2}");
             A("prog.packed",    "Compressed to:", "圧縮先：", "압축 위치:", "Comprimido en:", "Сжато в:", "已壓縮為：", "已压缩为：");

@@ -762,10 +762,15 @@ namespace FipArc
 
                 // .fip / .zip / .7z 问密码；f 格式转换不问
                 string pwd = null;
+                bool encryptHeaders = true;
                 if (ext == ".fip" || ext == ".zip" || ext == ".7z")
                 {
-                    pwd = PasswordForm.AskNew(this, nameBase + ext);
+                    // 7z 多给一个「同时加密文件名」勾选框
+                    bool[] he = (ext == ".7z") ? new bool[1] : null;
+                    if (he != null) he[0] = true;
+                    pwd = PasswordForm.AskNew(this, nameBase + ext, he);
                     if (pwd == null) return;      // 用户取消
+                    encryptHeaders = he == null || he[0];
                 }
 
                 byte[] data;
@@ -774,7 +779,7 @@ namespace FipArc
                 else if (ext == ".zip")
                     data = Archive.CreateZip(paths, baseDir, pwd);
                 else if (ext == ".7z")
-                    data = Archive.Create7z(paths, baseDir, pwd);
+                    data = Archive.Create7z(paths, baseDir, pwd, encryptHeaders);
                 else if (ext == ".tar")
                     data = Archive.CreateTar(paths, baseDir);
                 else if (ext == ".gz")

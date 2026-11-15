@@ -9,9 +9,13 @@ namespace FipArc
     {
         TextBox box;
         CheckBox show;
+        CheckBox heBox;          // 「同时加密文件名」，只有压缩 7z 时才显示
         public string Password;
 
-        PasswordForm(string title, string hint, string okText, bool allowEmpty)
+        /// <summary>用户是否勾选了「同时加密文件名」（仅 7z 有效）</summary>
+        public bool EncryptHeaders { get { return heBox != null && heBox.Checked; } }
+
+        PasswordForm(string title, string hint, string okText, bool allowEmpty, bool offerHeaderEncryption)
         {
             Text = title;
             // 用 CenterScreen 而不是 CenterParent：从右键菜单 / 命令行过来时
@@ -23,7 +27,7 @@ namespace FipArc
             MinimizeBox = false;
             ShowInTaskbar = true;
             TopMost = true;              // 一定要盖在最前面
-            ClientSize = new Size(420, 190);
+            ClientSize = new Size(420, offerHeaderEncryption ? 222 : 190);
             Font = new Font("Microsoft YaHei UI", 9f);
 
             Label l1 = new Label();
@@ -52,9 +56,30 @@ namespace FipArc
             show.CheckedChanged += delegate { box.UseSystemPasswordChar = !show.Checked; };
             Controls.Add(show);
 
+            // 7z 独有：连文件名一起加密。勾上之后，没有密码连里面有哪些文件都看不到。
+            if (offerHeaderEncryption)
+            {
+                heBox = new CheckBox();
+                heBox.Text = Lang.S("pw.he");
+                heBox.AutoSize = true;
+                heBox.Checked = true;               // 默认勾上，和以前的强制行为一致
+                heBox.Location = new Point(70, 120);
+                Controls.Add(heBox);
+
+                Label tip = new Label();
+                tip.Text = Lang.S("pw.hetip");
+                tip.AutoSize = false;
+                tip.Size = new Size(330, 32);
+                tip.Location = new Point(88, 140);
+                tip.ForeColor = Color.FromArgb(120, 120, 120);
+                Controls.Add(tip);
+            }
+
+            int btnY = offerHeaderEncryption ? 180 : 140;
+
             Button ok = new Button();
             ok.Text = okText;
-            ok.Location = new Point(236, 140);
+            ok.Location = new Point(236, btnY);
             ok.Size = new Size(80, 30);
             ok.DialogResult = DialogResult.OK;
             ok.Click += delegate
@@ -71,7 +96,7 @@ namespace FipArc
 
             Button cancel = new Button();
             cancel.Text = Lang.S("cancel");
-            cancel.Location = new Point(324, 140);
+            cancel.Location = new Point(324, btnY);
             cancel.Size = new Size(80, 30);
             cancel.DialogResult = DialogResult.Cancel;
             Controls.Add(cancel);
@@ -83,14 +108,24 @@ namespace FipArc
         /// <summary>设置新密码；返回 null 表示取消，空字符串表示不设密码</summary>
         public static string AskNew(IWin32Window owner, string what)
         {
+            return AskNew(owner, what, null);
+        }
+
+        /// <summary>
+        /// 设置新密码。heOut 不为 null 时（压缩 7z）会多出一个「同时加密文件名」勾选框，
+        /// 用户的选择通过它返回。
+        /// </summary>
+        public static string AskNew(IWin32Window owner, string what, bool[] heOut)
+        {
             using (PasswordForm f = new PasswordForm(Lang.S("pw.tset"),
-                string.Format(Lang.S("pw.tipset"), what), Lang.S("ok"), true))
+                string.Format(Lang.S("pw.tipset"), what), Lang.S("ok"), true, heOut != null))
             {
                 f.ShowInTaskbar = true;
                 f.Activate();
                 f.BringToFront();
-                if (f.ShowDialog(owner) == DialogResult.OK) return f.Password ?? "";
-                return null;
+                if (f.ShowDialog(owner) != DialogResult.OK) return null;
+                if (heOut != null && heOut.Length > 0) heOut[0] = f.EncryptHeaders;
+                return f.Password ?? "";
             }
         }
 
@@ -100,7 +135,7 @@ namespace FipArc
             using (PasswordForm f = new PasswordForm(Lang.S("pw.tneedtitle"),
                 Lang.S("pw.tneed") + Environment.NewLine +
                 Lang.S("pw.tneed2") +
-                (string.IsNullOrEmpty(extra) ? "" : Environment.NewLine + extra), Lang.S("pw.open"), false))
+                (string.IsNullOrEmpty(extra) ? "" : Environment.NewLine + extra), Lang.S("pw.open"), false, false))
             {
                 f.ShowInTaskbar = true;
                 f.Activate();

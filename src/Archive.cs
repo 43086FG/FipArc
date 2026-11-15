@@ -858,7 +858,9 @@ namespace FipArc
         }
 
         /// <summary>用自带的 7-Zip 打包成 .7z</summary>
-        public static byte[] Create7z(string[] paths, string baseDir, string password)
+        public static byte[] Create7z(string[] paths, string baseDir, string password) { return Create7z(paths, baseDir, password, true); }
+
+        public static byte[] Create7z(string[] paths, string baseDir, string password, bool encryptHeaders)
         {
             string tmpDir = Path.Combine(Path.GetTempPath(), "FipArc7z_" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(tmpDir);
@@ -869,7 +871,9 @@ namespace FipArc
                 args.Append("a -t7z -y -bd \"").Append(outFile).Append("\"");
                 // 有密码就 AES-256 加密，并且连文件名一起加密（-mhe=on）
                 if (!string.IsNullOrEmpty(password))
-                    args.Append(" -p\"").Append(password.Replace("\"", "")).Append("\" -mhe=on");
+                    args.Append(" -p\"").Append(password.Replace("\"", "")).Append("\"");
+                    // -mhe=on 连文件名一起加密；关掉时文件名可见，只有内容加密
+                    args.Append(encryptHeaders ? " -mhe=on" : " -mhe=off");
                 foreach (string p in paths) args.Append(" \"").Append(p).Append("\"");
                 SevenZip.Run(args.ToString(), 600000);
                 if (!File.Exists(outFile))

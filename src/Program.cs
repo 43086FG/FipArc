@@ -128,13 +128,18 @@ namespace FipArc
             // 只有压缩包格式才问密码：.fip（AES-256）和 .zip（标准 ZipCrypto）。
             // f 格式转换（fmp/fpg/fjp/fp4/fov/fxt）是"转码"，不问密码。
             string pwd = "";
+            bool encryptHeaders = true;
             if (fmt == "fip" || fmt == "zip" || fmt == "7z")
             {
                 string what = paths.Length == 1
                     ? Path.GetFileName(paths[0].TrimEnd('\\'))
                     : (paths.Length + " 个文件");
-                pwd = PasswordForm.AskNew(null, what + " → ." + fmt);
+                // 7z 多给一个「同时加密文件名」勾选框
+                bool[] he = (fmt == "7z") ? new bool[1] : null;
+                if (he != null) he[0] = true;
+                pwd = PasswordForm.AskNew(null, what + " → ." + fmt, he);
                 if (pwd == null) return;      // 用户取消
+                encryptHeaders = he == null || he[0];
             }
 
             using (BusyForm busy = new BusyForm(Lang.S("st.packing")))
@@ -150,7 +155,7 @@ namespace FipArc
                     {
                         string baseDir = Directory.Exists(p) ? Path.GetDirectoryName(p.TrimEnd('\\')) : Path.GetDirectoryName(p);
                         string nameBase = Directory.Exists(p) ? Path.GetFileName(p.TrimEnd('\\')) : Path.GetFileNameWithoutExtension(p);
-                        byte[] data = PackOne(new string[] { p }, baseDir, nameBase, fmt, pwd);
+                        byte[] data = PackOne(new string[] { p }, baseDir, nameBase, fmt, pwd, encryptHeaders);
                         string outPath = Convert2.UniquePath(Path.Combine(baseDir, nameBase + ext));
                         File.WriteAllBytes(outPath, data);
                         last = outPath;
@@ -173,7 +178,7 @@ namespace FipArc
         }
 
         /// <summary>按指定格式打包</summary>
-        static byte[] PackOne(string[] paths, string baseDir, string displayName, string fmt, string pwd)
+        static byte[] PackOne(string[] paths, string baseDir, string displayName, string fmt, string pwd, bool encryptHeaders)
         {
             switch (fmt)
             {
@@ -182,7 +187,7 @@ namespace FipArc
                 case "zip":
                     return Archive.CreateZip(paths, baseDir, pwd);   // pwd 非空则标准 ZipCrypto 加密
                 case "7z":
-                    return Archive.Create7z(paths, baseDir, pwd);   // pwd 非空则 AES-256 加密
+                    return Archive.Create7z(paths, baseDir, pwd, encryptHeaders);   // pwd 非空则 AES-256 加密
                 case "tar":
                     return Archive.CreateTar(paths, baseDir);
                 case "tgz":
