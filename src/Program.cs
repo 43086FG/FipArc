@@ -229,6 +229,7 @@ namespace FipArc
                         IExtractor ex = Archive.Open(path);
                         ex.SetPassword(pw);
                         ex.ExtractAll(dest, null);
+                        FlattenSingleDir(dest);
                     });
                     }
                     catch (Exception exAll) { err = exAll.Message; done = false; }
@@ -260,6 +261,35 @@ namespace FipArc
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        /// <summary>
+        /// 解压后如果目标目录里【只有一个文件夹、没有文件】，说明压缩包本身带一层
+        /// 顶层目录（vanilla.zip 里就是 vanilla/...）。再套一层就会变成
+        /// vanilla\vanilla\...，把里面的东西提上来。
+        /// </summary>
+        static void FlattenSingleDir(string dest)
+        {
+            try
+            {
+                string[] entries = Directory.GetFileSystemEntries(dest);
+                if (entries.Length != 1 || !Directory.Exists(entries[0])) return;
+                string only = entries[0];
+                foreach (string f in Directory.GetFiles(only, "*", SearchOption.AllDirectories))
+                {
+                    string rel = f.Substring(only.Length).TrimStart('\\');
+                    string target = Path.Combine(dest, rel);
+                    Directory.CreateDirectory(Path.GetDirectoryName(target));
+                    if (File.Exists(target)) File.Delete(target);
+                    File.Move(f, target);
+                }
+                foreach (string d in Directory.GetDirectories(only, "*", SearchOption.AllDirectories))
+                {
+                    string rel = d.Substring(only.Length).TrimStart('\\');
+                    Directory.CreateDirectory(Path.Combine(dest, rel));
+                }
+                Directory.Delete(only, true);
+            }
+            catch { }
+        }
         // ---------- 右键：转换为 FIP（按文件类型自动决定目标格式）----------
         static void DoToFip(string[] paths)
         {
@@ -444,14 +474,23 @@ namespace FipArc
             ControlBox = false;
             ShowInTaskbar = false;
             Text = "FipArc";
-            ClientSize = new Size(300, 90);
+            ClientSize = new Size(340, 120);
             Label l = new Label();
             l.Text = text;
             l.AutoSize = false;
             l.TextAlign = ContentAlignment.MiddleCenter;
-            l.Dock = DockStyle.Fill;
+            l.Size = new Size(320, 40);
+            l.Location = new Point(10, 14);
             l.Font = new Font("Microsoft YaHei UI", 10f);
             Controls.Add(l);
+
+            // 进度条：不确定进度时走马灯，好歹让用户知道在动
+            ProgressBar pb = new ProgressBar();
+            pb.Style = ProgressBarStyle.Marquee;
+            pb.MarqueeAnimationSpeed = 40;
+            pb.Size = new Size(300, 18);
+            pb.Location = new Point(20, 66);
+            Controls.Add(pb);
             TopMost = true;
         }
     }

@@ -346,6 +346,10 @@ namespace FipArc
             {
                 try { Del(@"Software\Classes\" + pg); } catch { }
             }
+            // Applications\FipArc.exe 会让 Windows 给【所有文件】的"打开方式"列出本程序，
+            // 用户不希望媒体/图片上出现"以 FipArc 打开"，所以这个条目也不要。
+            try { Del(@"Software\Classes\Applications\FipArc.exe"); } catch { }
+
             try { Del(@"Software\FipArc\Capabilities"); } catch { }
             try { Del(@"Software\FipArcSE\Capabilities"); } catch { }
 

@@ -521,7 +521,12 @@ namespace FipArc
                 string target = Path.Combine(outDir, rel.Replace('/', Path.DirectorySeparatorChar));
                 string d = Path.GetDirectoryName(target);
                 if (!string.IsNullOrEmpty(d)) Directory.CreateDirectory(d);
-                File.WriteAllBytes(target, ZipPacked.ReadEntry(path, it, password));
+                byte[] data = ZipPacked.ReadEntry(path, it, password);
+                // 密码错时 ReadEntry 会返回空数组，以前照样写盘 —— 于是"乱输密码也能解压，
+                // 但文件全是 0 字节"。用条目里记录的解压后大小校验，对不上就当密码错。
+                if (data == null || (it.Size > 0 && data.Length != (int)it.Size))
+                    throw new WrongPasswordException();
+                File.WriteAllBytes(target, data);
                 n++;
             }
             return n > 0 ? outDir : null;
@@ -552,7 +557,10 @@ namespace FipArc
                 string target = ZipExtractor.SafeJoin(destDir, it.Name);
                 if (it.Name.EndsWith("/")) { Directory.CreateDirectory(target); continue; }
                 Directory.CreateDirectory(Path.GetDirectoryName(target));
-                File.WriteAllBytes(target, ZipPacked.ReadEntry(path, it, password));
+                byte[] data = ZipPacked.ReadEntry(path, it, password);
+                if (data == null || (it.Size > 0 && data.Length != (int)it.Size))
+                    throw new WrongPasswordException();
+                File.WriteAllBytes(target, data);
                 n++;
                 if (progress != null) progress(n, it.Name);
             }
