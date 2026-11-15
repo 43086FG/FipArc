@@ -770,8 +770,7 @@ namespace FipArc
                     bool[] he = (ext == ".7z" || ext == ".zip") ? new bool[1] : null;
                     if (he != null) he[0] = true;
                     string heText = (ext == ".7z" || ext == ".zip") ? Lang.S(ext == ".7z" ? "pw.he" : "pw.aes") : null;
-                    string heTip  = (ext == ".7z" || ext == ".zip") ? Lang.S(ext == ".7z" ? "pw.hetip" : "pw.aestip") : null;
-                    pwd = PasswordForm.AskNew(this, nameBase + ext, heText, heTip, he);
+                    pwd = PasswordForm.AskNew(this, nameBase + ext, heText, he);
                     if (pwd == null) return;      // 用户取消
                     encryptHeaders = he == null || he[0];
                     useAes = he != null && he[0];

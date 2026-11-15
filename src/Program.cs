@@ -139,8 +139,7 @@ namespace FipArc
                 bool[] he = (fmt == "7z" || fmt == "zip") ? new bool[1] : null;
                 if (he != null) he[0] = true;
                 string heText = (fmt == "7z" || fmt == "zip") ? Lang.S(fmt == "7z" ? "pw.he" : "pw.aes") : null;
-                string heTip  = (fmt == "7z" || fmt == "zip") ? Lang.S(fmt == "7z" ? "pw.hetip" : "pw.aestip") : null;
-                pwd = PasswordForm.AskNew(null, what + " → ." + fmt, heText, heTip, he);
+                pwd = PasswordForm.AskNew(null, what + " → ." + fmt, heText, he);
                 if (pwd == null) return;      // 用户取消
                 encryptHeaders = he == null || he[0];
                 useAes = he != null && he[0];

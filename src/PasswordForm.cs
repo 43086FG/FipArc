@@ -9,13 +9,13 @@ namespace FipArc
     {
         TextBox box;
         CheckBox show;
-        CheckBox heBox;          // 可选勾选框（7z 的「加密文件名」/ zip 的「AES」）
+        CheckBox extraBox;       // 可选勾选框（7z 的「加密文件名」/ zip 的「AES-256」）
         public string Password;
 
-        /// <summary>用户是否勾选了「同时加密文件名」（仅 7z 有效）</summary>
-        public bool ExtraChecked { get { return heBox != null && heBox.Checked; } }
+        /// <summary>可选勾选框是否被勾上</summary>
+        public bool ExtraChecked { get { return extraBox != null && extraBox.Checked; } }
 
-        PasswordForm(string title, string hint, string okText, bool allowEmpty, string extraText, string extraTip)
+        PasswordForm(string title, string hint, string okText, bool allowEmpty, string extraText)
         {
             Text = title;
             // 用 CenterScreen 而不是 CenterParent：从右键菜单 / 命令行过来时
@@ -27,59 +27,53 @@ namespace FipArc
             MinimizeBox = false;
             ShowInTaskbar = true;
             TopMost = true;              // 一定要盖在最前面
-            ClientSize = new Size(420, string.IsNullOrEmpty(extraText) ? 190 : 222);
+            bool hasExtra = !string.IsNullOrEmpty(extraText);
+            ClientSize = new Size(440, hasExtra ? 212 : 186);
             Font = new Font("Microsoft YaHei UI", 9f);
 
             Label l1 = new Label();
             l1.Text = hint;
             l1.AutoSize = false;
-            l1.Size = new Size(380, 40);
-            l1.Location = new Point(18, 16);
+            l1.Size = new Size(400, 48);   // 两行够用，不再截断
+            l1.Location = new Point(18, 14);
             Controls.Add(l1);
 
             Label l2 = new Label();
             l2.Text = Lang.S("pw.label");
             l2.AutoSize = true;
-            l2.Location = new Point(18, 64);
+            l2.Location = new Point(18, 68);
             Controls.Add(l2);
 
             box = new TextBox();
-            box.Location = new Point(70, 61);
-            box.Size = new Size(330, 26);
+            box.Location = new Point(70, 65);
+            box.Size = new Size(350, 26);
             box.UseSystemPasswordChar = true;
             Controls.Add(box);
 
             show = new CheckBox();
             show.Text = Lang.S("pw.show");
             show.AutoSize = true;
-            show.Location = new Point(70, 93);
+            show.Location = new Point(70, 97);
             show.CheckedChanged += delegate { box.UseSystemPasswordChar = !show.Checked; };
             Controls.Add(show);
 
-            // 7z 独有：连文件名一起加密。勾上之后，没有密码连里面有哪些文件都看不到。
-            if (!string.IsNullOrEmpty(extraText))
+            if (hasExtra)
             {
-                heBox = new CheckBox();
-                heBox.Text = extraText;
-                heBox.AutoSize = true;
-                heBox.Checked = true;               // 默认勾上，和以前的强制行为一致
-                heBox.Location = new Point(70, 120);
-                Controls.Add(heBox);
-
-                Label tip = new Label();
-                tip.Text = extraTip;
-                tip.AutoSize = false;
-                tip.Size = new Size(330, 32);
-                tip.Location = new Point(88, 140);
-                tip.ForeColor = Color.FromArgb(120, 120, 120);
-                Controls.Add(tip);
+                extraBox = new CheckBox();
+                extraBox.Text = extraText;
+                extraBox.AutoSize = true;
+                extraBox.Checked = true;           // 默认勾上
+                extraBox.Location = new Point(70, 124);
+                Controls.Add(extraBox);
             }
 
-            int btnY = string.IsNullOrEmpty(extraText) ? 180 : 140;
+            // 按钮永远在最下面，且留足边距 —— 之前这里算反了，
+            // 勾选框一出现按钮就被顶到勾选框位置，看起来像"没有确定按钮"。
+            int btnY = ClientSize.Height - 44;
 
             Button ok = new Button();
             ok.Text = okText;
-            ok.Location = new Point(236, btnY);
+            ok.Location = new Point(256, btnY);
             ok.Size = new Size(80, 30);
             ok.DialogResult = DialogResult.OK;
             ok.Click += delegate
@@ -96,7 +90,7 @@ namespace FipArc
 
             Button cancel = new Button();
             cancel.Text = Lang.S("cancel");
-            cancel.Location = new Point(324, btnY);
+            cancel.Location = new Point(344, btnY);
             cancel.Size = new Size(80, 30);
             cancel.DialogResult = DialogResult.Cancel;
             Controls.Add(cancel);
@@ -108,17 +102,17 @@ namespace FipArc
         /// <summary>设置新密码；返回 null 表示取消，空字符串表示不设密码</summary>
         public static string AskNew(IWin32Window owner, string what)
         {
-            return AskNew(owner, what, (string)null, (string)null, null);
+            return AskNew(owner, what, null, null);
         }
 
         /// <summary>
-        /// 设置新密码。heOut 不为 null 时（压缩 7z）会多出一个「同时加密文件名」勾选框，
-        /// 用户的选择通过它返回。
+        /// 设置新密码。extraText 不为空时（压缩 7z / zip）会多一个勾选框，
+        /// 用户的选择通过 outVal[0] 返回。
         /// </summary>
-        public static string AskNew(IWin32Window owner, string what, string extraText, string extraTip, bool[] outVal)
+        public static string AskNew(IWin32Window owner, string what, string extraText, bool[] outVal)
         {
             using (PasswordForm f = new PasswordForm(Lang.S("pw.tset"),
-                string.Format(Lang.S("pw.tipset"), what), Lang.S("ok"), true, extraText, extraTip))
+                string.Format(Lang.S("pw.tipset"), what), Lang.S("ok"), true, extraText))
             {
                 f.ShowInTaskbar = true;
                 f.Activate();
@@ -135,7 +129,7 @@ namespace FipArc
             using (PasswordForm f = new PasswordForm(Lang.S("pw.tneedtitle"),
                 Lang.S("pw.tneed") + Environment.NewLine +
                 Lang.S("pw.tneed2") +
-                (string.IsNullOrEmpty(extra) ? "" : Environment.NewLine + extra), Lang.S("pw.open"), false, null, null))
+                (string.IsNullOrEmpty(extra) ? "" : Environment.NewLine + extra), Lang.S("pw.open"), false, null))
             {
                 f.ShowInTaskbar = true;
                 f.Activate();
